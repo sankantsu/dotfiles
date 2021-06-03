@@ -47,8 +47,11 @@ let g:tex_flavor = "latex"
 """ key mappings ---------------------- {{{
 
 " leader key ---------------------- {{{
-let mapleader = "\\"
-let maplocalleader = "+"
+let mapleader = ","
+let maplocalleader = "\\"
+
+nnoremap + ,
+vnoremap + ,
 " }}}
 
 " motions ---------------------- {{{
@@ -161,24 +164,6 @@ vnoremap [ <ESC>`>a]<ESC>`<i[<ESC>`>2l
 vnoremap ] <ESC>`>a]<ESC>`<i[<ESC>`>2l
 " }}}
 
-" comment out current line ---------------------- {{{
-augroup commenting
-    autocmd!
-    autocmd  FileType  c       nnoremap <buffer>  <LocalLeader>C  I// <ESC>
-    autocmd  FileType  python  nnoremap <buffer>  <LocalLeader>C  I# <ESC>
-    autocmd  FileType  tex     nnoremap <buffer>  <LocalLeader>C  I% <ESC>
-    autocmd  FileType  vim     nnoremap <buffer>  <LocalLeader>C  I" <ESC>
-augroup END
-
-" uncomment
-nnoremap <LocalLeader>c ^df <CR>
-
-" visual mode
-vnoremap <LocalLeader>C :normal <LocalLeader>C<CR>
-vnoremap <LocalLeader>c :normal! ^df <CR>
-
-" }}}
-
 " }}}
 
 " abbreviations ---------------------- {{{
@@ -198,4 +183,8 @@ function! FoldColumnToggle()
     endif
 endfunction
 
+" }}}
+
+" plugin ---------------------- {{{
+execute pathogen#infect()
 " }}}
