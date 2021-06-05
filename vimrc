@@ -1,3 +1,7 @@
+" plugin ---------------------- {{{
+execute pathogen#infect()
+" }}}
+
 """ general settings ---------------------- {{{
 
 " enable syntax highlight
@@ -5,6 +9,9 @@ syntax enable
 
 " enable filetype plugin
 filetype plugin on
+
+" use colors for dark background
+set background=dark
 
 " print the line number in front of each line
 set number
@@ -46,7 +53,7 @@ let g:tex_flavor = "latex"
 
 """ key mappings ---------------------- {{{
 
-" leader key ---------------------- {{{
+" set leader key ---------------------- {{{
 let mapleader = ","
 let maplocalleader = "\\"
 
@@ -122,6 +129,9 @@ nnoremap <Leader>m :<C-u>match<CR>
 " toggle number
 nnoremap <leader>n :setlocal number!<CR>
 
+" reset filetype
+nnoremap <leader>sf :call ResetFileType()<CR>
+
 " source vimrc
 nnoremap <Leader>sv :<C-u>source $MYVIMRC<CR>
 
@@ -183,8 +193,9 @@ function! FoldColumnToggle()
     endif
 endfunction
 
-" }}}
+function! ResetFileType()
+    let ft = &filetype
+    execute "set filetype=" . ft
+endfunction
 
-" plugin ---------------------- {{{
-execute pathogen#infect()
 " }}}
