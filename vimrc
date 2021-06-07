@@ -17,18 +17,13 @@ set background=dark
 set number
 set numberwidth=2
 
-" show status line
+" status line setting
 set laststatus=2
-
-" show the line and column number of the cursor position
-set ruler
+set statusline=%f\ %y\ %m\ %=\ %l,%c/%L
 
 " show bracket match
 set showmatch
 set matchtime=2
-
-" show a column which indicates open/close folds
-" set foldcolumn=2
 
 " allow backspacing over autoindent/line breaks/start of insert
 set backspace=indent,eol,start
@@ -43,8 +38,9 @@ set smartcase
 set hlsearch
 set incsearch
 
-" show candidates while tab completion
+" command-line completion
 set wildmenu
+set wildmode=list:longest,full
 
 " default filetype for *.tex
 let g:tex_flavor = "latex"
@@ -64,24 +60,18 @@ vnoremap + ,
 " motions ---------------------- {{{
 
 " left-right motions
-nnoremap H ^
-vnoremap H ^
-nnoremap L $
-vnoremap L $
-nnoremap ^ <nop>
-nnoremap $ <nop>
+noremap H ^
+noremap L $
+noremap ^ <nop>
+noremap $ <nop>
 
 " up-down motions
-nnoremap <C-j> gj
-vnoremap <C-j> gj
-nnoremap <C-k> gk
-vnoremap <C-k> gk
+noremap <C-j> gj
+noremap <C-k> gk
 
 " other motions
-nnoremap <C-h> H
-vnoremap <C-h> H
-nnoremap <C-l> L
-vnoremap <C-l> L
+noremap <C-h> H
+noremap <C-l> L
 
 " move aroung buffer list
 nnoremap [b :<C-u>bprev<CR>
@@ -118,7 +108,6 @@ nnoremap <Leader>d 0D
 
 " edit vimrc
 nnoremap <Leader>ev :<C-u>vsplit $MYVIMRC<CR>
-nnoremap <Leader>eV :<C-u>edit $MYVIMRC<CR>
 
 " toggle fold column
 nnoremap <leader>f :call FoldColumnToggle()<CR>
@@ -152,11 +141,14 @@ nnoremap <silent> <ESC><ESC> :<C-u>nohlsearch<CR><C-l>
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
 
+" insert expression
+inoremap <C-g><C-e> <C-r>=
+
 " make current word to lowercase/uppercase
 " *** don't work well in Visual-Block insert
 inoremap <C-g>u <esc>viwuea
-inoremap <C-g><C-u> <esc>viwUea
 inoremap <C-g>U <esc>viwUea
+inoremap <C-g><C-u> <esc>viwUea
 
 " <C-z> : redraw, line at center of the window
 inoremap <C-z> <C-o>zz
@@ -172,6 +164,10 @@ vnoremap { <ESC>`>a}<ESC>`<i{<ESC>`>2l
 vnoremap } <ESC>`>a}<ESC>`<i{<ESC>`>2l
 vnoremap [ <ESC>`>a]<ESC>`<i[<ESC>`>2l
 vnoremap ] <ESC>`>a]<ESC>`<i[<ESC>`>2l
+" }}}
+
+" columnate ---------------------- {{{
+vnoremap <Leader>cl :!column -t<CR>
 " }}}
 
 " }}}
