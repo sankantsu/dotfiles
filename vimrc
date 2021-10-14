@@ -7,8 +7,9 @@ execute pathogen#infect()
 " enable syntax highlight
 syntax enable
 
-" enable filetype plugin
+" enable filetype plugin and filetype indent
 filetype plugin on
+filetype indent on
 
 " use colors for dark background
 set background=dark
@@ -32,6 +33,12 @@ set backspace=indent,eol,start
 set autoindent
 set shiftwidth=4
 
+" tab setting
+set tabstop=8
+set softtabstop=4
+set smarttab
+set expandtab
+
 " search setting
 set ignorecase
 set smartcase
@@ -41,6 +48,9 @@ set incsearch
 " command-line completion
 set wildmenu
 set wildmode=list:longest,full
+
+" toggle paste mode
+set pastetoggle=<F12>
 
 " default filetype for *.tex
 let g:tex_flavor = "latex"
@@ -53,9 +63,18 @@ let g:tex_flavor = "latex"
 let mapleader = ","
 let maplocalleader = "\\"
 
-nnoremap + ,
-vnoremap + ,
+noremap + ,
 " }}}
+
+" plugin ---------------------- {{{
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"}}}
 
 " motions ---------------------- {{{
 
@@ -67,7 +86,9 @@ noremap $ <nop>
 
 " up-down motions
 noremap <C-j> gj
+noremap <C-n> gj
 noremap <C-k> gk
+noremap <C-p> gk
 
 " other motions
 noremap <C-h> H
@@ -89,6 +110,10 @@ nnoremap ]c :<C-u>cnext<CR>
 nnoremap g/ /\v
 vnoremap g/ /\v
 
+" }}}
+
+" substitution ---------------------- {{{
+
 " make & command to remember flags
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>
@@ -96,6 +121,9 @@ xnoremap & :&&<CR>
 " }}}
 
 " normal mode ---------------------- {{{
+
+" don't use register when delete a character
+nnoremap x "_x
 
 " yank until the end of the line
 nnoremap Y y$
@@ -112,11 +140,23 @@ nnoremap <Leader>ev :<C-u>vsplit $MYVIMRC<CR>
 " toggle fold column
 nnoremap <leader>f :call FoldColumnToggle()<CR>
 
+" print character-code
+nnoremap <Leader>ga ga
+
+" Delete current line without overwriting register
+nnoremap <leader>gd "_dd
+
+" make first character of the word UPPER case
+nnoremap <leader>gu wbgUl
+
 " stop highlighting matches
 nnoremap <Leader>m :<C-u>match<CR>
 
 " toggle number
 nnoremap <leader>n :setlocal number!<CR>
+
+" replace punctuations (comma, period)
+nnoremap <leader>rp :%!replace_punctuations.sh<CR>
 
 " reset filetype
 nnoremap <leader>sf :call ResetFileType()<CR>
@@ -155,19 +195,21 @@ inoremap <C-z> <C-o>zz
 
 " }}}
 
-" surround ---------------------- {{{
-vnoremap " <ESC>`>a"<ESC>`<i"<ESC>`>2l
-vnoremap ' <ESC>`>a'<ESC>`<i'<ESC>`>2l
-vnoremap ( <ESC>`>a)<ESC>`<i(<ESC>`>2l
-vnoremap ) <ESC>`>a)<ESC>`<i(<ESC>`>2l
-vnoremap { <ESC>`>a}<ESC>`<i{<ESC>`>2l
-vnoremap } <ESC>`>a}<ESC>`<i{<ESC>`>2l
-vnoremap [ <ESC>`>a]<ESC>`<i[<ESC>`>2l
-vnoremap ] <ESC>`>a]<ESC>`<i[<ESC>`>2l
-" }}}
+" command line mode ---------------------- {{{
 
-" columnate ---------------------- {{{
-vnoremap <Leader>cl :!column -t<CR>
+" invoke command line window
+execute "set cedit=\<C-q>"
+
+" emacs style editing
+cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-a> <C-b>
+
+" recall command line history
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <Up> <C-p>
+cnoremap <Down> <C-n>
 " }}}
 
 " }}}
