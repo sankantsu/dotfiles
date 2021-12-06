@@ -4,10 +4,12 @@ execute pathogen#infect()
 
 """ general settings ---------------------- {{{
 
-" enable syntax highlight
-syntax enable
+" language setting
+language message en_US.utf8
+language time en_US.utf8
 
-" enable filetype plugin and filetype indent
+" enable syntax highlight and filetype specific settings
+syntax enable
 filetype plugin on
 filetype indent on
 
@@ -26,7 +28,7 @@ set statusline=%f\ %y\ %m\ %=\ %l,%c/%L
 set showmatch
 set matchtime=2
 
-" allow backspacing over autoindent/line breaks/start of insert
+" allow backspacing over autoindent, line breaks, and start of insertiton
 set backspace=indent,eol,start
 
 " indent setting
@@ -38,6 +40,9 @@ set tabstop=8
 set softtabstop=4
 set smarttab
 set expandtab
+
+" always use system clipboard
+set clipboard^=unnamedplus
 
 " search setting
 set ignorecase
@@ -65,16 +70,6 @@ let maplocalleader = "\\"
 
 noremap + ,
 " }}}
-
-" plugin ---------------------- {{{
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-"}}}
 
 " motions ---------------------- {{{
 
@@ -140,23 +135,17 @@ nnoremap <Leader>ev :<C-u>vsplit $MYVIMRC<CR>
 " toggle fold column
 nnoremap <leader>f :call FoldColumnToggle()<CR>
 
-" print character-code
-nnoremap <Leader>ga ga
-
 " Delete current line without overwriting register
-nnoremap <leader>gd "_dd
+nnoremap <leader>dd "_dd
 
 " make first character of the word UPPER case
 nnoremap <leader>gu wbgUl
 
 " stop highlighting matches
-nnoremap <Leader>m :<C-u>match<CR>
+nnoremap <Leader>ma :<C-u>match<CR>
 
 " toggle number
 nnoremap <leader>n :setlocal number!<CR>
-
-" replace punctuations (comma, period)
-nnoremap <leader>rp :%!replace_punctuations.sh<CR>
 
 " reset filetype
 nnoremap <leader>sf :call ResetFileType()<CR>
