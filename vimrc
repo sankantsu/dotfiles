@@ -97,6 +97,12 @@ nnoremap ]b :<C-u>bnext<CR>
 nnoremap [c :<C-u>cprev<CR>
 nnoremap ]c :<C-u>cnext<CR>
 
+" move around tab pages
+nnoremap [t :<C-u>execute "tabprevious " . v:count1<CR>
+nnoremap ]t @=SwitchTab()<CR>
+nnoremap [T :tabfirst<CR>
+nnoremap ]T :tablast<CR>
+
 " }}}
 
 " search ---------------------- {{{
@@ -223,6 +229,15 @@ endfunction
 function! ResetFileType()
     let ft = &filetype
     execute "set filetype=" . ft
+endfunction
+
+function! SwitchTab()
+    " when current tabpage is last tabpage, switch to first tab
+    if tabpagenr() == tabpagenr('$')
+        tabfirst
+    else
+        tabnext
+    endif
 endfunction
 
 " }}}
