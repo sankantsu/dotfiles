@@ -24,6 +24,9 @@ set numberwidth=2
 set laststatus=2
 set statusline=%f\ %y\ %m\ %=\ %l,%c/%L
 
+" display last line as much as possible (do not replace to '@')
+set display+=lastline
+
 " show bracket match
 set showmatch
 set matchtime=2
@@ -98,8 +101,8 @@ nnoremap [c :<C-u>cprev<CR>
 nnoremap ]c :<C-u>cnext<CR>
 
 " move around tab pages
-nnoremap [t :<C-u>execute "tabprevious " . v:count1<CR>
-nnoremap ]t @=SwitchTab()<CR>
+nnoremap <silent> [t :<C-u>execute "tabprevious " . v:count1<CR>
+nnoremap <silent> ]t @=SwitchTab()<CR>
 nnoremap [T :tabfirst<CR>
 nnoremap ]T :tablast<CR>
 
@@ -153,6 +156,9 @@ nnoremap <Leader>ma :<C-u>match<CR>
 " toggle number
 nnoremap <leader>n :setlocal number!<CR>
 
+" redraw
+nnoremap <leader>rr :redraw!<CR>
+
 " reset filetype
 nnoremap <leader>sf :call ResetFileType()<CR>
 
@@ -187,6 +193,9 @@ inoremap <C-g><C-u> <esc>viwUea
 
 " <C-z> : redraw, line at center of the window
 inoremap <C-z> <C-o>zz
+
+" break undo sequence when inserting new line
+inoremap <CR> <C-g>u<CR>
 
 " }}}
 

@@ -1,20 +1,25 @@
-! keycode  66 Caps_Lock -> Control_L
-! keycode  37 Control_L -> Caps_Lock
-! keycode 100 Henkan_Mode -> Control_R
-! keycode 101 Hiragana_Katakana -> Alt_R
-! keycode 102 Muhenkan -> Escape
-! keycode 108 Alt_R -> Escape
+! keycode  66 Caps_Lock         -> Escape
+! keycode  37 Control_L         -> Alt_L
+! keycode  64 Alt_L             -> Muhenkan (disable IME)
+! keycode 102 Muhenkan          -> Control_L
+! keycode 100 Henkan_Mode       -> Control_R
+! keycode 101 Hiragana_Katakana -> Henkan (enable IME)
+! keycode 108 Alt_R
+! keycode 105 Control_R         -> BackSpace
+! keycode  49 Zenkaku_Hankaku   -> Caps_Lock
 
 clear Lock
-remove Control = Control_L
-remove mod1 = Alt_R
-keycode 37 = Caps_Lock
-keycode 66 = Control_L
+clear Control
+clear mod1
+keycode 66  = Escape
+keycode 37  = Alt_L
+keycode 64  = Muhenkan
+keycode 102 = Control_L
 keycode 100 = Control_R
-keycode 101 = Alt_R
-keycode 102 = Escape
-keycode 108 = Escape
-add Lock = Caps_Lock
-add Control = Control_L
-add Control = Control_R
-add mod1 = Alt_R
+keycode 101 = Henkan
+keycode 108 = Alt_R
+keycode 105 = BackSpace
+keycode 49  = Caps_Lock
+add Lock    = Caps_Lock
+add Control = Control_L Control_R
+add mod1    = Alt_L Alt_R
