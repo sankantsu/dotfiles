@@ -63,6 +63,9 @@ set pastetoggle=<F12>
 " default filetype for *.tex
 let g:tex_flavor = "latex"
 
+" accept at character in control word
+let g:tex_stylish = 1
+
 " }}}
 
 """ key mappings ---------------------- {{{
@@ -125,6 +128,10 @@ xnoremap & :&&<CR>
 " }}}
 
 " normal mode ---------------------- {{{
+
+" disable rarely used 2line deletion
+nnoremap dj <nop>
+nnoremap dk <nop>
 
 " don't use register when delete a character
 nnoremap x "_x
