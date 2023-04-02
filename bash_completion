@@ -1,0 +1,61 @@
+# bash completion settings
+
+# generate available printer list
+make_printer_list() {
+    local printers=$(lpstat -e | tr '\n' ' ')
+    COMPREPLY=( $(compgen -W "${printers}" -- ${cur}) )
+}
+
+_lp() {
+    local cur prev cword
+    _get_comp_words_by_ref -n : cur prev cword
+    if [[ "$prev" == "-d" ]]; then
+        make_printer_list
+    else
+        COMPREPLY=( $(compgen -f -- ${cur}) )
+    fi
+}
+complete -F _lp lp
+
+_lpq() {
+    local cur prev cword
+    _get_comp_words_by_ref -n : cur prev cword
+    if [[ "$prev" == "-P" ]]; then
+        make_printer_list
+    else
+        COMPREPLY=( $(compgen -f -- ${cur}) )
+    fi
+}
+complete -F _lpq lprm
+
+_lpoptions() {
+    local cur prev cword
+    _get_comp_words_by_ref -n : cur prev cword
+    if [[ "$prev" == "-d" || "$prev" == "-p" || "$prev" == "-x" ]]; then
+        make_printer_list
+    else
+        COMPREPLY=( $(compgen -f -- ${cur}) )
+    fi
+}
+complete -F _lpoptions lpoptions lpadmin
+
+_pdftitle() {
+    local cur prev cword
+    _get_comp_words_by_ref -n : cur prev cword
+    if [[ "$prev" == "-a" ]]; then
+        local algorithms="original max2 eliot"
+        COMPREPLY=( $(compgen -W "$algorithms" -- "$cur") )
+    else
+        COMPREPLY=( $(compgen -f -- ${cur}) )
+    fi
+}
+complete -F _pdftitle pdftitle
+
+# SATySFi
+_satysfi() {
+    local cur prev cword
+    _get_comp_words_by_ref -n : cur prev cword
+    local candidates=$(ls *.{saty,satyh,satyg} 2>/dev/null | tr '\n' ' ')
+    COMPREPLY=( $(compgen -W "$candidates" -- "$cur") )
+}
+complete -F _satysfi satysfi
