@@ -21,16 +21,22 @@ require("lazy").setup({
     "junegunn/vim-easy-align",
     -- textobj
     { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
-    -- colorscheme
+    -- markdown syntax
+    "preservim/vim-markdown",
+    -- colorschem
     "EdenEast/nightfox.nvim",
+    -- status line
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+    },
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
     -- fuzzy finder
     { 'nvim-telescope/telescope.nvim', branch = 'master', dependencies = { 'nvim-lua/plenary.nvim' } },
-    -- {
-    --     "nvim-telescope/telescope-file-browser.nvim",
-    --     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-    -- },
+    -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" } },
+    { "sankantsu/telescope-zenn.nvim", dependencies = { "nvim-telescope/telescope.nvim", } },
+    { 'crispgm/telescope-heading.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
     -- tree-sitter
     {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
     -- lsp
@@ -40,11 +46,23 @@ require("lazy").setup({
         build = ":MasonUpdate" -- :MasonUpdate updates registry contents
     },
     "williamboman/mason-lspconfig.nvim",
+    { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
+    {
+	"SmiteshP/nvim-navbuddy",
+	dependencies = {
+	    "neovim/nvim-lspconfig",
+	    "SmiteshP/nvim-navic",
+	    "MunifTanjim/nui.nvim",
+	    -- "numToStr/Comment.nvim",        -- Optional
+	    "nvim-telescope/telescope.nvim" -- Optional
+	},
+    },
     -- completion
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/vim-vsnip",
     "hrsh7th/cmp-vsnip",
+    "hrsh7th/cmp-emoji",
 })
 
 -- line number
@@ -67,9 +85,9 @@ vim.opt.backspace = "indent,eol,start"
 
 -- indent, tab
 vim.opt.autoindent = true
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
 vim.opt.tabstop = 8
-vim.opt.softtabstop = 4
+vim.opt.softtabstop = 2
 vim.opt.smarttab = true
 vim.opt.expandtab = true
 
@@ -104,10 +122,8 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "+", ",")
 
 -- left-right motions
-vim.keymap.set("n", "H", "^")
-vim.keymap.set("n", "L", "$")
-vim.keymap.set("n", "^", "<nop>")
-vim.keymap.set("n", "$", "<nop>")
+vim.keymap.set({"n", "v"}, "H", "^")
+vim.keymap.set({"n", "v"}, "L", "$")
 
 -- up-down motions
 vim.keymap.set("n", "<C-n>", "gj")
@@ -170,7 +186,7 @@ vim.keymap.set("i", "<C-b>", "<Left>")
 vim.keymap.set("i", "<C-g><C-e>", "<C-r>=")
 
 -- break undo sequence when inserting new line
-vim.keymap.set("n", "<CR>", "<C-g>u<CR>")
+vim.keymap.set("i", "<CR>", "<C-g>u<CR>")
 
 -- command line mode ----------------------
 
@@ -219,6 +235,10 @@ function! SwitchTab()
 endfunction
 ]]
 
+-- easy align ----------------------
+
+vim.keymap.set("v", "ga", "<Plug>(EasyAlign)")
+
 -- colorscheme ----------------------
 
 require("nightfox").setup({
@@ -227,6 +247,24 @@ require("nightfox").setup({
     }
 })
 vim.cmd("colorscheme nightfox")
+
+-- status line ----------------------
+
+require("lualine").setup({
+    sections = {
+        lualine_c = {
+            "filename",
+            {
+                "navic",
+                color_correction = nil,
+		navic_opts = nil
+            },
+        },
+    },
+    options = {
+      section_separators = { left = "", right = "" },
+    },
+})
 
 -- visual support ----------------------
 
@@ -240,13 +278,7 @@ require("indent_blankline").setup {
 
 local telescope = require('telescope')
 local builtin = require('telescope.builtin')
-
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
--- vim.keymap.set('n', '<leader>ff',
---     telescope.extensions.file_browser.file_browser, { noremap = true })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+local actions = require "telescope.actions"
 
 telescope.setup({
     defaults = {
@@ -256,15 +288,46 @@ telescope.setup({
         preview = {
             ls_short = true,
         },
+        mappings = {
+            n = {
+                ["<esc>"] = false,
+                ["q"] = actions.close,
+                ["<C-u>"] = actions.results_scrolling_up,
+                ["<C-d>"] = actions.results_scrolling_down,
+
+                ["<PageUp>"] = actions.preview_scrolling_up,
+                ["<PageDown>"] = actions.preview_scrolling_down,
+
+                ["P"] = actions.cycle_previewers_next,
+            },
+        },
     },
-    -- extensions = {
+    extensions = {
+        heading = {
+            picker_opts = {
+                sorting_strategy = "ascending",
+            },
+        },
+        zenn = {
+            -- slug_display_length = 10,
+        },
     --     file_browser = {
     --         depth = 2,
     --         display_stat = false,
     --     },
-    -- },
+    },
 })
 -- require("telescope").load_extension "file_browser"
+-- telescope.load_extension("zenn")
+telescope.load_extension("heading")
+
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+-- vim.keymap.set('n', '<leader>ff', telescope.extensions.file_browser.file_browser, { noremap = true })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>fz', telescope.extensions.zenn.article_picker, {})
+vim.keymap.set('n', '<leader>fd', telescope.extensions.heading.heading, {})
 
 -- LSP (language server)
 
@@ -305,6 +368,20 @@ augroup lsp_document_highlight
 augroup END
 ]]
 
+-- breadcrumb
+require('nvim-navic').setup {
+  lsp = {
+    auto_attach = true,
+  },
+  highlight = true,
+}
+
+require('nvim-navbuddy').setup {
+  lsp = {
+    auto_attach = true,
+  },
+}
+
 -- completion
 local cmp = require("cmp")
 cmp.setup({
@@ -317,6 +394,7 @@ cmp.setup({
     { name = "nvim_lsp" },
     -- { name = "buffer" },
     -- { name = "path" },
+    { name = "emoji" , option = { insert = true }, },
   },
   mapping = cmp.mapping.preset.insert({
     ["<C-p>"] = cmp.mapping.select_prev_item(),

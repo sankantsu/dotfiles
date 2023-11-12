@@ -38,6 +38,11 @@ config.keys = {
     -- pane
     {
         mods = 'LEADER',
+        key = 'o',
+        action = act.ActivatePaneDirection 'Next',
+    },
+    {
+        mods = 'LEADER',
         key = '%',
         action = act.SplitHorizontal,
     },
@@ -52,6 +57,11 @@ config.keys = {
         action = act.SplitVertical,
     },
     -- tab
+    {
+        mods = 'LEADER',
+        key = 'c',
+        action = act.SpawnTab "CurrentPaneDomain",
+    },
     {
         mods = 'LEADER',
         key = ',',
