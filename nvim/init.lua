@@ -14,55 +14,55 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup({
-    -- basic editing
-    "tpope/vim-surround",
-    "tpope/vim-commentary",
-    "tpope/vim-repeat",
-    "junegunn/vim-easy-align",
-    -- textobj
-    { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
-    -- markdown syntax
-    "preservim/vim-markdown",
-    -- colorschem
-    "EdenEast/nightfox.nvim",
-    -- status line
-    {
-        'nvim-lualine/lualine.nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+  -- basic editing
+  "tpope/vim-surround",
+  "tpope/vim-commentary",
+  "tpope/vim-repeat",
+  "junegunn/vim-easy-align",
+  -- textobj
+  { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
+  -- markdown syntax
+  "preservim/vim-markdown",
+  -- colorschem
+  "EdenEast/nightfox.nvim",
+  -- status line
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+  },
+  -- visual support
+  { "lukas-reineke/indent-blankline.nvim" },
+  -- fuzzy finder
+  { 'nvim-telescope/telescope.nvim', branch = 'master', dependencies = { 'nvim-lua/plenary.nvim' } },
+  -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" } },
+  { "sankantsu/telescope-zenn.nvim", dependencies = { "nvim-telescope/telescope.nvim", } },
+  { 'crispgm/telescope-heading.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
+  -- tree-sitter
+  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  -- lsp
+  "neovim/nvim-lspconfig",
+  {
+    "williamboman/mason.nvim",
+    build = ":MasonUpdate" -- :MasonUpdate updates registry contents
+  },
+  "williamboman/mason-lspconfig.nvim",
+  { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
+  {
+    "SmiteshP/nvim-navbuddy",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+      "MunifTanjim/nui.nvim",
+      -- "numToStr/Comment.nvim",        -- Optional
+      "nvim-telescope/telescope.nvim" -- Optional
     },
-    -- visual support
-    { "lukas-reineke/indent-blankline.nvim" },
-    -- fuzzy finder
-    { 'nvim-telescope/telescope.nvim', branch = 'master', dependencies = { 'nvim-lua/plenary.nvim' } },
-    -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" } },
-    { "sankantsu/telescope-zenn.nvim", dependencies = { "nvim-telescope/telescope.nvim", } },
-    { 'crispgm/telescope-heading.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
-    -- tree-sitter
-    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-    -- lsp
-    "neovim/nvim-lspconfig",
-    {
-        "williamboman/mason.nvim",
-        build = ":MasonUpdate" -- :MasonUpdate updates registry contents
-    },
-    "williamboman/mason-lspconfig.nvim",
-    { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
-    {
-	"SmiteshP/nvim-navbuddy",
-	dependencies = {
-	    "neovim/nvim-lspconfig",
-	    "SmiteshP/nvim-navic",
-	    "MunifTanjim/nui.nvim",
-	    -- "numToStr/Comment.nvim",        -- Optional
-	    "nvim-telescope/telescope.nvim" -- Optional
-	},
-    },
-    -- completion
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/vim-vsnip",
-    "hrsh7th/cmp-vsnip",
-    "hrsh7th/cmp-emoji",
+  },
+  -- completion
+  "hrsh7th/nvim-cmp",
+  "hrsh7th/cmp-nvim-lsp",
+  "hrsh7th/vim-vsnip",
+  "hrsh7th/cmp-vsnip",
+  "hrsh7th/cmp-emoji",
 })
 
 -- line number
@@ -251,27 +251,27 @@ vim.cmd("colorscheme nightfox")
 -- status line ----------------------
 
 require("lualine").setup({
-    sections = {
-        lualine_c = {
-            "filename",
-            {
-                "navic",
-                color_correction = nil,
-		navic_opts = nil
-            },
-        },
+  sections = {
+    lualine_c = {
+      "filename",
+      {
+        "navic",
+        color_correction = nil,
+        navic_opts = nil
+      },
     },
-    options = {
-      section_separators = { left = "", right = "" },
-    },
+  },
+  options = {
+    section_separators = { left = "", right = "" },
+  },
 })
 
 -- visual support ----------------------
 
 require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = true,
+  -- for example, context is off by default, use this to turn it on
+  show_current_context = true,
+  show_current_context_start = true,
 }
 
 -- telescope ----------------------
@@ -281,41 +281,41 @@ local builtin = require('telescope.builtin')
 local actions = require "telescope.actions"
 
 telescope.setup({
-    defaults = {
-        layout_config = {
-            horizontal = { preview_cutoff = 0 },
-        },
-        preview = {
-            ls_short = true,
-        },
-        mappings = {
-            n = {
-                ["<esc>"] = false,
-                ["q"] = actions.close,
-                ["<C-u>"] = actions.results_scrolling_up,
-                ["<C-d>"] = actions.results_scrolling_down,
-
-                ["<PageUp>"] = actions.preview_scrolling_up,
-                ["<PageDown>"] = actions.preview_scrolling_down,
-
-                ["P"] = actions.cycle_previewers_next,
-            },
-        },
+  defaults = {
+    layout_config = {
+      horizontal = { preview_cutoff = 0 },
     },
-    extensions = {
-        heading = {
-            picker_opts = {
-                sorting_strategy = "ascending",
-            },
-        },
-        zenn = {
-            -- slug_display_length = 10,
-        },
-    --     file_browser = {
-    --         depth = 2,
-    --         display_stat = false,
-    --     },
+    preview = {
+      ls_short = true,
     },
+    mappings = {
+      n = {
+        ["<esc>"] = false,
+        ["q"] = actions.close,
+        ["<C-u>"] = actions.results_scrolling_up,
+        ["<C-d>"] = actions.results_scrolling_down,
+
+        ["<PageUp>"] = actions.preview_scrolling_up,
+        ["<PageDown>"] = actions.preview_scrolling_down,
+
+        ["P"] = actions.cycle_previewers_next,
+      },
+    },
+  },
+  extensions = {
+    heading = {
+      picker_opts = {
+        sorting_strategy = "ascending",
+      },
+    },
+    zenn = {
+      -- slug_display_length = 10,
+    },
+    -- file_browser = {
+    --   depth = 2,
+    --   display_stat = false,
+    -- },
+  },
 })
 -- require("telescope").load_extension "file_browser"
 -- telescope.load_extension("zenn")
