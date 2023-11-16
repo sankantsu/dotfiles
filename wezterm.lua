@@ -27,8 +27,13 @@ config.font = wezterm.font_with_fallback {
 config.font_size = 21.0
 
 -- key bindings
-config.leader = { mods = 'CTRL', key = 'j', timeout_milliseconds = 1000 }
+config.leader = { mods = 'CTRL', key = 'b', timeout_milliseconds = 1000 }
 config.keys = {
+    {
+        mods = 'LEADER|CTRL',
+        key = 'b',
+        action = act.SendKey { key = 'b', mods = 'CTRL' },
+    },
     -- quick select
     {
         mods = 'LEADER',

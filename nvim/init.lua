@@ -13,6 +13,7 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
+
 require("lazy").setup({
   -- basic editing
   "tpope/vim-surround",
@@ -33,12 +34,12 @@ require("lazy").setup({
   -- visual support
   { "lukas-reineke/indent-blankline.nvim" },
   -- fuzzy finder
-  { 'nvim-telescope/telescope.nvim', branch = 'master', dependencies = { 'nvim-lua/plenary.nvim' } },
-  -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" } },
-  { "sankantsu/telescope-zenn.nvim", dependencies = { "nvim-telescope/telescope.nvim", } },
-  { 'crispgm/telescope-heading.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
+  { "nvim-telescope/telescope.nvim", dev = false, name = "telescope.nvim", branch = "master", dependencies = { "nvim-lua/plenary.nvim" } },
+  -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "telescope.nvim", "nvim-lua/plenary.nvim" } },
+  { "sankantsu/telescope-zenn.nvim", dev = false, dependencies = { "telescope.nvim", } },
+  { dir = "~/git/telescope-heading.nvim", dependencies = { "telescope.nvim" } },
   -- tree-sitter
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- lsp
   "neovim/nvim-lspconfig",
   {
@@ -54,7 +55,7 @@ require("lazy").setup({
       "SmiteshP/nvim-navic",
       "MunifTanjim/nui.nvim",
       -- "numToStr/Comment.nvim",        -- Optional
-      "nvim-telescope/telescope.nvim" -- Optional
+      "telescope.nvim", -- Optional
     },
   },
   -- completion
@@ -63,6 +64,10 @@ require("lazy").setup({
   "hrsh7th/vim-vsnip",
   "hrsh7th/cmp-vsnip",
   "hrsh7th/cmp-emoji",
+}, { -- lazy config
+  dev = {
+    path = "~/git",
+  }
 })
 
 -- line number
@@ -282,8 +287,16 @@ local actions = require "telescope.actions"
 
 telescope.setup({
   defaults = {
+    -- qflist_previewer = require("telescope.previewers").qflist.new,
+    layout_strategy = "vertical",
     layout_config = {
       horizontal = { preview_cutoff = 0 },
+      vertical = {
+        height = 0.95,
+        preview_cutoff = 0,
+        preview_height = 8,
+        -- scroll_speed = 1,
+      },
     },
     preview = {
       ls_short = true,
@@ -292,11 +305,14 @@ telescope.setup({
       n = {
         ["<esc>"] = false,
         ["q"] = actions.close,
-        ["<C-u>"] = actions.results_scrolling_up,
-        ["<C-d>"] = actions.results_scrolling_down,
 
-        ["<PageUp>"] = actions.preview_scrolling_up,
-        ["<PageDown>"] = actions.preview_scrolling_down,
+        ["<C-d>"] = actions.results_scrolling_down,
+        ["<C-u>"] = actions.results_scrolling_up,
+
+        ["<C-h>"] = actions.preview_scrolling_left,
+        ["<C-j>"] = actions.preview_scrolling_down,
+        ["<C-k>"] = actions.preview_scrolling_up,
+        ["<C-l>"] = actions.preview_scrolling_right,
 
         ["P"] = actions.cycle_previewers_next,
       },
