@@ -22,8 +22,6 @@ require("lazy").setup({
   "junegunn/vim-easy-align",
   -- textobj
   { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
-  -- markdown syntax
-  "preservim/vim-markdown",
   -- colorschem
   "EdenEast/nightfox.nvim",
   -- status line
@@ -35,11 +33,13 @@ require("lazy").setup({
   { "lukas-reineke/indent-blankline.nvim" },
   -- fuzzy finder
   { "nvim-telescope/telescope.nvim", dev = false, name = "telescope.nvim", branch = "master", dependencies = { "nvim-lua/plenary.nvim" } },
-  -- { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "telescope.nvim", "nvim-lua/plenary.nvim" } },
+  { "LukasPietzschmann/telescope-tabs", dependencies = { "telescope.nvim" } },
+  { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "telescope.nvim", "nvim-lua/plenary.nvim" } },
   { "sankantsu/telescope-zenn.nvim", dev = false, dependencies = { "telescope.nvim", } },
-  { dir = "~/git/telescope-heading.nvim", dependencies = { "telescope.nvim" } },
+  { dir = "~/git/telescope-heading.nvim", dev = true, dependencies = { "telescope.nvim" } },
   -- tree-sitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  -- 'nvim-treesitter/playground',
   -- lsp
   "neovim/nvim-lspconfig",
   {
@@ -50,6 +50,7 @@ require("lazy").setup({
   { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
   {
     "SmiteshP/nvim-navbuddy",
+    dev = false,
     dependencies = {
       "neovim/nvim-lspconfig",
       "SmiteshP/nvim-navic",
@@ -64,6 +65,17 @@ require("lazy").setup({
   "hrsh7th/vim-vsnip",
   "hrsh7th/cmp-vsnip",
   "hrsh7th/cmp-emoji",
+  -- denops
+  'vim-denops/denops.vim',
+  -- ddc
+  -- conflicts with nvim-cmp
+  -- 'Shougo/ddc.vim',
+  -- 'Shougo/ddc-ui-native',
+  -- 'Shougo/ddc-filter-matcher_head',
+  -- 'Shougo/ddc-filter-sorter_rank',
+  -- skk
+  { 'vim-skk/skkeleton', dependencies = { "vim-denops/denops.vim" }, },
+  { 'rinx/cmp-skkeleton', dependencies = { 'hrsh7th/nvim-cmp', 'vim-skk/skkeleton' }, },
 }, { -- lazy config
   dev = {
     path = "~/git",
@@ -172,6 +184,9 @@ vim.keymap.set("n", "<Leader>d", "0D")
 -- toggle fold column
 -- vim.keymap.set("n", "<leader>f", ":call FoldColumnToggle()<CR>")
 
+-- close quickfix
+vim.keymap.set("n", "<leader>cc", ":cclose<CR>")
+
 -- redraw
 vim.keymap.set("n", "<leader>rr", ":redraw!<CR>")
 
@@ -217,13 +232,13 @@ vim.cmd [[iabbrev #- ----------------------]]
 -- Vimscript functions ----------------------
 
 vim.cmd [[
-function! FoldColumnToggle()
-    if &foldcolumn
-	setlocal foldcolumn=0
-    else
-	setlocal foldcolumn=3
-    endif
-endfunction
+" function! FoldColumnToggle()
+"     if &foldcolumn
+" 	setlocal foldcolumn=0
+"     else
+" 	setlocal foldcolumn=3
+"     endif
+" endfunction
 
 function! ResetFileType()
     let ft = &filetype
@@ -271,13 +286,9 @@ require("lualine").setup({
   },
 })
 
--- visual support ----------------------
+-- indent blankline
 
-require("indent_blankline").setup {
-  -- for example, context is off by default, use this to turn it on
-  show_current_context = true,
-  show_current_context_start = true,
-}
+require("ibl").setup { }
 
 -- telescope ----------------------
 
@@ -292,7 +303,7 @@ telescope.setup({
     layout_config = {
       horizontal = { preview_cutoff = 0 },
       vertical = {
-        height = 0.95,
+        height = function(_, _, max_lines) return max_lines end,
         preview_cutoff = 0,
         preview_height = 8,
         -- scroll_speed = 1,
@@ -318,22 +329,29 @@ telescope.setup({
       },
     },
   },
+  pickers = {
+    help_tags = {
+      -- previewer = require("config.buffer_previewer").heading_previewer(),
+    },
+  },
   extensions = {
     heading = {
       picker_opts = {
         sorting_strategy = "ascending",
+        use_section_number = true,
+        previewer = require("config.buffer_previewer").heading_previewer(),
       },
     },
     zenn = {
       -- slug_display_length = 10,
     },
-    -- file_browser = {
-    --   depth = 2,
-    --   display_stat = false,
-    -- },
+    file_browser = {
+      depth = 2,
+      -- display_stat = false,
+    },
   },
 })
--- require("telescope").load_extension "file_browser"
+require("telescope").load_extension "file_browser"
 -- telescope.load_extension("zenn")
 telescope.load_extension("heading")
 
@@ -344,6 +362,21 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fz', telescope.extensions.zenn.article_picker, {})
 vim.keymap.set('n', '<leader>fd', telescope.extensions.heading.heading, {})
+vim.keymap.set('n', '<leader>ft', require("telescope-tabs").list_tabs, {})
+
+-- treesitter
+
+require("nvim-treesitter.configs").setup {
+  highlight = {
+    enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+}
 
 -- LSP (language server)
 
@@ -354,35 +387,35 @@ require('mason-lspconfig').setup_handlers({ function(server)
 end })
 
 -- keyboard shortcut
-vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')
-vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
-vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-vim.keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-vim.keymap.set('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>')
-vim.keymap.set('n', 'g]', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-vim.keymap.set('n', 'g[', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+vim.keymap.set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>')
+vim.keymap.set('n', 'gf', '<cmd>:lua vim.lsp.buf.formatting()<CR>')
+vim.keymap.set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>')
+vim.keymap.set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>')
+vim.keymap.set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
+vim.keymap.set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
+vim.keymap.set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
+vim.keymap.set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>')
+vim.keymap.set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
+vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>')
+vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
+vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
 
 -- LSP handlers
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
 -- Reference highlight
-vim.cmd [[
-set updatetime=500
-highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-augroup lsp_document_highlight
-  autocmd!
-  autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
-  autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
-augroup END
-]]
+-- vim.cmd [[
+-- set updatetime=500
+-- highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+-- highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+-- highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+-- augroup lsp_document_highlight
+--   autocmd!
+--   autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
+--   autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
+-- augroup END
+-- ]]
 
 -- breadcrumb
 require('nvim-navic').setup {
@@ -393,6 +426,10 @@ require('nvim-navic').setup {
 }
 
 require('nvim-navbuddy').setup {
+  window = {
+    size = { height = "40%", width = "100%" },
+    position = { row = "100%", col = "50%" },
+  },
   lsp = {
     auto_attach = true,
   },
@@ -410,8 +447,12 @@ cmp.setup({
     { name = "nvim_lsp" },
     -- { name = "buffer" },
     -- { name = "path" },
-    { name = "emoji" , option = { insert = true }, },
+    { name = "emoji", option = { insert = true }, },
+    { name = "skkeleton" },
   },
+  -- view = {
+  --   entries = "native", -- recommended setting of cmp-skkeleton?
+  -- },
   mapping = cmp.mapping.preset.insert({
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
@@ -423,3 +464,38 @@ cmp.setup({
     ghost_text = true,
   },
 })
+
+-- skk
+
+vim.cmd [[
+call skkeleton#config({ 'globalJisyo': '~/.skk/SKK-JISYO.L' })
+imap <C-j> <Plug>(skkeleton-enable)
+cmap <C-j> <Plug>(skkeleton-enable)
+
+call skkeleton#register_kanatable("rom", {
+  \ "ca": ["か"],
+  \ "cu": ["く"],
+  \ "co": ["こ"],
+  \ "xn": ["ん"],
+  \ })
+]]
+
+-- ddc configuration for skkeleton
+-- vim.cmd [[
+-- call ddc#custom#patch_global('ui', 'native')
+-- call ddc#custom#patch_global('sources', ['skkeleton'])
+-- call ddc#custom#patch_global('sourceOptions', {
+--     \   '_': {
+--     \     'matchers': ['matcher_head'],
+--     \     'sorters': ['sorter_rank']
+--     \   },
+--     \   'skkeleton': {
+--     \     'mark': 'skkeleton',
+--     \     'matchers': ['skkeleton'],
+--     \     'sorters': [],
+--     \     'minAutoCompleteLength': 2,
+--     \     'isVolatile': v:true,
+--     \   },
+--     \ })
+-- call ddc#enable()
+-- ]]
