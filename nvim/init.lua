@@ -385,6 +385,12 @@ require("nvim-treesitter.configs").setup {
   },
   incremental_selection = {
     enable = true,
+    keymaps = {
+      init_selection = "gs",
+      node_incremental = "gs",
+      scope_incremental = "gS",
+      node_decremental = "gm",
+    },
   },
   indent = {
     enable = true,
@@ -395,8 +401,7 @@ require("nvim-treesitter.configs").setup {
 
 require("mason").setup()
 require('mason-lspconfig').setup_handlers({ function(server)
-  local capabilities = require("cmp_nvim_lsp").default_capabilities()
-  require('lspconfig')[server].setup(capabilities)
+  require('lspconfig')[server].setup {}
 end })
 
 -- keyboard shortcut
@@ -409,8 +414,8 @@ local attach_lsp_mappings = function ()
   set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>')
   set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>')
   set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
-  set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
-  set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
+  -- set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
+  -- set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
   set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>')
   set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
   set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>')
