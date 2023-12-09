@@ -31,12 +31,14 @@ require("lazy").setup({
   },
   -- visual support
   { "lukas-reineke/indent-blankline.nvim" },
-  -- fuzzy finder
+  -- UI
   { "nvim-telescope/telescope.nvim", dev = false, name = "telescope.nvim", branch = "master", dependencies = { "nvim-lua/plenary.nvim" } },
   { "LukasPietzschmann/telescope-tabs", dependencies = { "telescope.nvim" } },
   { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "telescope.nvim", "nvim-lua/plenary.nvim" } },
-  { "sankantsu/telescope-zenn.nvim", dev = false, dependencies = { "telescope.nvim", } },
+  { "sankantsu/telescope-zenn.nvim", dev = true, dependencies = { "telescope.nvim", } },
   { dir = "~/git/telescope-heading.nvim", dev = true, dependencies = { "telescope.nvim" } },
+  -- 'nvim-telescope/telescope-ui-select.nvim',
+  'stevearc/dressing.nvim',
   -- tree-sitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- 'nvim-treesitter/playground',
@@ -59,6 +61,7 @@ require("lazy").setup({
       "telescope.nvim", -- Optional
     },
   },
+  -- "nvimdev/lspsaga.nvim",
   -- completion
   "hrsh7th/nvim-cmp",
   "hrsh7th/cmp-nvim-lsp",
@@ -196,6 +199,9 @@ vim.keymap.set("n", "<leader>sf", ":call ResetFileType()<CR>")
 -- clear screen and stop highlighting
 vim.keymap.set("n", "<ESC><ESC>", ":<C-u>nohlsearch<CR><C-l>", { silent = true })
 
+-- get ascii value
+vim.keymap.set("n", "<leader>ga", "ga")
+
 -- insert mode ----------------------
 
 -- move forward/backword (emacs style)
@@ -280,9 +286,12 @@ require("lualine").setup({
         navic_opts = nil
       },
     },
+    lualine_x = { "filetype", },
+    lualine_y = { },
   },
   options = {
     section_separators = { left = "", right = "" },
+    -- globalstatus = true,
   },
 })
 
@@ -349,9 +358,13 @@ telescope.setup({
       depth = 2,
       -- display_stat = false,
     },
+    -- ["ui-select"] = {
+    --   require("telescope.themes").get_dropdown {}
+    -- }
   },
 })
 require("telescope").load_extension "file_browser"
+-- require("telescope").load_extension "ui-select"
 -- telescope.load_extension("zenn")
 telescope.load_extension("heading")
 
@@ -387,18 +400,28 @@ require('mason-lspconfig').setup_handlers({ function(server)
 end })
 
 -- keyboard shortcut
-vim.keymap.set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>')
-vim.keymap.set('n', 'gf', '<cmd>:lua vim.lsp.buf.formatting()<CR>')
-vim.keymap.set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>')
-vim.keymap.set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>')
-vim.keymap.set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
-vim.keymap.set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
-vim.keymap.set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
-vim.keymap.set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>')
-vim.keymap.set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
-vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>')
-vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
-vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
+local attach_lsp_mappings = function ()
+  local set = function(mode, lhs, rhs)
+    vim.keymap.set(mode, lhs, rhs, { buffer = true })
+  end
+  set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>')
+  set('n', 'g=', '<cmd>:lua vim.lsp.buf.format()<CR>')
+  set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>')
+  set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>')
+  set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
+  set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
+  set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
+  set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>')
+  set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
+  set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>')
+  set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
+  set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
+end
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "Attach keymappings for LSP functionalities",
+  callback = attach_lsp_mappings,
+})
 
 -- LSP handlers
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -416,6 +439,8 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 --   autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
 -- augroup END
 -- ]]
+
+-- require("lspsaga").setup()
 
 -- breadcrumb
 require('nvim-navic').setup {
