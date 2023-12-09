@@ -89,10 +89,6 @@ require("lazy").setup({
 vim.opt.number = true
 vim.opt.numberwidth = 2
 
--- status line setting
--- vim.opt.laststatus = 2
--- vim.opt.statusline = "%f\ %y\ %m\ %=\ %l,%c/%L"
-
 -- display last line as much as possible (do not replace to '@')
 -- vim.opt.display:append { "lastline" }
 
@@ -142,16 +138,16 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "+", ",")
 
 -- left-right motions
-vim.keymap.set({"n", "v"}, "H", "^")
-vim.keymap.set({"n", "v"}, "L", "$")
+vim.keymap.set({ "n", "x" }, "H", "^")
+vim.keymap.set({ "n", "x" }, "L", "$")
 
 -- up-down motions
-vim.keymap.set("n", "<C-n>", "gj")
-vim.keymap.set("n", "<C-p>", "gk")
+vim.keymap.set({ "n", "v" }, "<C-n>", "gj")
+vim.keymap.set({ "n", "v" }, "<C-p>", "gk")
 
 -- other motions
-vim.keymap.set("n", "<C-h>", "H")
-vim.keymap.set("n", "<C-l>", "L")
+vim.keymap.set({ "n", "v" }, "<C-h>", "H")
+vim.keymap.set({ "n", "v" }, "<C-l>", "L")
 
 -- move aroung buffer list
 vim.keymap.set("n", "[b", ":<C-u>bprev<CR>")
@@ -183,9 +179,6 @@ vim.keymap.set("n", "Y", "y$")
 
 -- Delete current line except line break
 vim.keymap.set("n", "<Leader>d", "0D")
-
--- toggle fold column
--- vim.keymap.set("n", "<leader>f", ":call FoldColumnToggle()<CR>")
 
 -- close quickfix
 vim.keymap.set("n", "<leader>cc", ":cclose<CR>")
@@ -238,14 +231,6 @@ vim.cmd [[iabbrev #- ----------------------]]
 -- Vimscript functions ----------------------
 
 vim.cmd [[
-" function! FoldColumnToggle()
-"     if &foldcolumn
-" 	setlocal foldcolumn=0
-"     else
-" 	setlocal foldcolumn=3
-"     endif
-" endfunction
-
 function! ResetFileType()
     let ft = &filetype
     execute "set filetype=" . ft
@@ -295,7 +280,7 @@ require("lualine").setup({
   },
 })
 
--- indent blankline
+-- indent blankline ----------------------
 
 require("ibl").setup { }
 
@@ -377,7 +362,7 @@ vim.keymap.set('n', '<leader>fz', telescope.extensions.zenn.article_picker, {})
 vim.keymap.set('n', '<leader>fd', telescope.extensions.heading.heading, {})
 vim.keymap.set('n', '<leader>ft', require("telescope-tabs").list_tabs, {})
 
--- treesitter
+-- treesitter ----------------------
 
 require("nvim-treesitter.configs").setup {
   highlight = {
@@ -397,7 +382,7 @@ require("nvim-treesitter.configs").setup {
   },
 }
 
--- LSP (language server)
+-- LSP (language server) ----------------------
 
 require("mason").setup()
 require('mason-lspconfig').setup_handlers({ function(server)
@@ -495,7 +480,7 @@ cmp.setup({
   },
 })
 
--- skk
+-- skk ----------------------
 
 vim.cmd [[
 call skkeleton#config({ 'globalJisyo': '~/.skk/SKK-JISYO.L' })
