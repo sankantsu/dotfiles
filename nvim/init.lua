@@ -13,7 +13,6 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
-
 require("lazy").setup({
   -- basic editing
   "tpope/vim-surround",
@@ -31,6 +30,7 @@ require("lazy").setup({
   },
   -- visual support
   { "lukas-reineke/indent-blankline.nvim" },
+
   -- UI
   { "nvim-telescope/telescope.nvim", dev = false, name = "telescope.nvim", branch = "master", dependencies = { "nvim-lua/plenary.nvim" } },
   { "LukasPietzschmann/telescope-tabs", dependencies = { "telescope.nvim" } },
@@ -41,7 +41,6 @@ require("lazy").setup({
   'stevearc/dressing.nvim',
   -- tree-sitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-  -- 'nvim-treesitter/playground',
   -- lsp
   "neovim/nvim-lspconfig",
   {
@@ -62,12 +61,17 @@ require("lazy").setup({
     },
   },
   -- "nvimdev/lspsaga.nvim",
+
+  -- language specific
+  { "sankantsu/satysfi.nvim", dev = true },
+  "kaarmu/typst.vim",
   -- completion
   "hrsh7th/nvim-cmp",
   "hrsh7th/cmp-nvim-lsp",
   "hrsh7th/vim-vsnip",
   "hrsh7th/cmp-vsnip",
   "hrsh7th/cmp-emoji",
+
   -- denops
   'vim-denops/denops.vim',
   -- ddc
@@ -82,7 +86,7 @@ require("lazy").setup({
 }, { -- lazy config
   dev = {
     path = "~/git",
-  }
+  },
 })
 
 -- line number
@@ -138,16 +142,16 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("n", "+", ",")
 
 -- left-right motions
-vim.keymap.set({ "n", "x" }, "H", "^")
-vim.keymap.set({ "n", "x" }, "L", "$")
+vim.keymap.set({ "n", "x" }, "<space>h", "^")
+vim.keymap.set({ "n", "x" }, "<space>l", "$")
 
--- up-down motions
+-- up-down motions (display-line)
 vim.keymap.set({ "n", "v" }, "<C-n>", "gj")
 vim.keymap.set({ "n", "v" }, "<C-p>", "gk")
 
--- other motions
-vim.keymap.set({ "n", "v" }, "<C-h>", "H")
-vim.keymap.set({ "n", "v" }, "<C-l>", "L")
+-- page-top page-bottom
+-- vim.keymap.set({ "n", "v" }, "H", "H")
+-- vim.keymap.set({ "n", "v" }, "L", "L")
 
 -- move aroung buffer list
 vim.keymap.set("n", "[b", ":<C-u>bprev<CR>")
@@ -158,8 +162,8 @@ vim.keymap.set("n", "[c", ":<C-u>cprev<CR>")
 vim.keymap.set("n", "]c", ":<C-u>cnext<CR>")
 
 -- move around tab pages
-vim.keymap.set("n", "[t", ':<C-u>execute "tabprevious " . v:count1<CR>', { silent = true })
-vim.keymap.set("n", "]t", "@=SwitchTab()<CR>", { silent = true })
+vim.keymap.set("n", "<C-h>", ':<C-u>execute "tabprevious " . v:count1<CR>', { silent = true })
+vim.keymap.set("n", "<C-l>", "@=SwitchTab()<CR>", { silent = true })
 
 -- make & command to remember flags
 vim.keymap.set("n", "&", ":&&<CR>")
@@ -192,9 +196,6 @@ vim.keymap.set("n", "<leader>sf", ":call ResetFileType()<CR>")
 -- clear screen and stop highlighting
 vim.keymap.set("n", "<ESC><ESC>", ":<C-u>nohlsearch<CR><C-l>", { silent = true })
 
--- get ascii value
-vim.keymap.set("n", "<leader>ga", "ga")
-
 -- insert mode ----------------------
 
 -- move forward/backword (emacs style)
@@ -223,7 +224,7 @@ vim.keymap.set("c", "<C-n>", "<Down>")
 vim.keymap.set("c", "<Up>", "<C-p>")
 vim.keymap.set("c", "<Down>", "<C-n>")
 
--- abbreviations ----------------------
+-- bbreviations ----------------------
 
 -- horizontal line
 vim.cmd [[iabbrev #- ----------------------]]
@@ -342,6 +343,11 @@ telescope.setup({
     file_browser = {
       depth = 2,
       -- display_stat = false,
+      mappings = {
+        -- ["n"] = {
+        --   ["c"] = { require("telescope").extensions.file_browser.actions.create, nowait = true },
+        -- },
+      },
     },
     -- ["ui-select"] = {
     --   require("telescope.themes").get_dropdown {}
@@ -354,7 +360,6 @@ require("telescope").load_extension "file_browser"
 telescope.load_extension("heading")
 
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
--- vim.keymap.set('n', '<leader>ff', telescope.extensions.file_browser.file_browser, { noremap = true })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
@@ -362,9 +367,16 @@ vim.keymap.set('n', '<leader>fz', telescope.extensions.zenn.article_picker, {})
 vim.keymap.set('n', '<leader>fd', telescope.extensions.heading.heading, {})
 vim.keymap.set('n', '<leader>ft', require("telescope-tabs").list_tabs, {})
 
+-- language specific
+
+require("satysfi-nvim").setup()
+
 -- treesitter ----------------------
 
 require("nvim-treesitter.configs").setup {
+  -- ensure_installed = {
+  --   "satysfi",
+  -- },
   highlight = {
     enable = true,
   },
@@ -384,7 +396,17 @@ require("nvim-treesitter.configs").setup {
 
 -- LSP (language server) ----------------------
 
-require("mason").setup()
+require("mason").setup {
+  registries = {
+    "github:sankantsu/satysfi-mason-registry",
+    "github:mason-org/mason-registry",
+  },
+  log_level = vim.log.levels.DEBUG,
+}
+
+require('mason-lspconfig').setup {
+  -- ensure_installed = { "lua_ls", "satysfi_ls", },
+}
 require('mason-lspconfig').setup_handlers({ function(server)
   require('lspconfig')[server].setup {}
 end })
@@ -394,18 +416,18 @@ local attach_lsp_mappings = function ()
   local set = function(mode, lhs, rhs)
     vim.keymap.set(mode, lhs, rhs, { buffer = true })
   end
-  set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>')
-  set('n', 'g=', '<cmd>:lua vim.lsp.buf.format()<CR>')
-  set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>')
-  set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>')
-  set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
-  -- set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
-  -- set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
-  set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>')
-  set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
-  set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>')
-  set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
-  set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
+  set('n', 'K',  vim.lsp.buf.hover)
+  set('n', 'g=', vim.lsp.buf.format)
+  set('n', 'gr', vim.lsp.buf.references)
+  set('n', 'gd', vim.lsp.buf.definition)
+  set('n', 'gD', vim.lsp.buf.declaration)
+  -- set('n', 'gi', vim.lsp.buf.implementation)
+  -- set('n', 'gt', vim.lsp.buf.type_definition)
+  set('n', 'gn', vim.lsp.buf.rename)
+  set('n', 'ga', vim.lsp.buf.code_action)
+  set('n', 'ge', vim.diagnostic.open_float)
+  set('n', 'g]', vim.diagnostic.goto_next)
+  set('n', 'g[', vim.diagnostic.goto_prev)
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -414,6 +436,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- LSP handlers
+-- vim.lsp.handlers["textDocument/definition"] = function (_, result)
+--   print(vim.inspect(result))
+-- end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
