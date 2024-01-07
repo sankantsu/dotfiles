@@ -30,6 +30,8 @@ require("lazy").setup({
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons", opt = true },
     },
+    -- gitsigns
+    "lewis6991/gitsigns.nvim",
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
 
@@ -308,6 +310,41 @@ require("lualine").setup({
         section_separators = { left = "", right = "" },
         -- globalstatus = true,
     },
+})
+
+-- git signs
+
+require("gitsigns").setup({
+    on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map("n", "]c", gs.next_hunk);
+        map("n", "[c", gs.prev_hunk);
+
+        -- Actions
+        map("n", "<leader>hs", gs.stage_hunk)
+        map("n", "<leader>hr", gs.reset_hunk)
+        map("v", "<leader>hs", function()
+            gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end)
+        map("v", "<leader>hr", function()
+            gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end)
+        map("n", "<leader>hp", gs.preview_hunk)
+        map("n", "<leader>hb", function()
+            gs.blame_line({ full = true })
+        end)
+
+        -- Text object
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+    end,
 })
 
 -- indent blankline ----------------------
