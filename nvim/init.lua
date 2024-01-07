@@ -34,7 +34,8 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
-
+    -- autopair
+    { "windwp/nvim-autopairs", opts = {} },
     -- UI
     {
         "nvim-telescope/telescope.nvim",
@@ -350,6 +351,10 @@ require("gitsigns").setup({
 -- indent blankline ----------------------
 
 require("ibl").setup({})
+
+-- autopair
+
+require("nvim-autopairs").setup {}
 
 -- telescope ----------------------
 
