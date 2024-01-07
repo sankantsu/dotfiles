@@ -40,7 +40,7 @@ require("lazy").setup({
   -- 'nvim-telescope/telescope-ui-select.nvim',
   'stevearc/dressing.nvim',
   -- tree-sitter
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   -- lsp
   "neovim/nvim-lspconfig",
   {
@@ -81,7 +81,7 @@ require("lazy").setup({
   -- 'Shougo/ddc-filter-matcher_head',
   -- 'Shougo/ddc-filter-sorter_rank',
   -- skk
-  { 'vim-skk/skkeleton', dependencies = { "vim-denops/denops.vim" }, },
+  { 'vim-skk/skkeleton',  dependencies = { "vim-denops/denops.vim" }, },
   { 'rinx/cmp-skkeleton', dependencies = { 'hrsh7th/nvim-cmp', 'vim-skk/skkeleton' }, },
 }, { -- lazy config
   dev = {
@@ -254,9 +254,9 @@ vim.keymap.set("v", "ga", "<Plug>(EasyAlign)")
 -- colorscheme ----------------------
 
 require("nightfox").setup({
-    options = {
-        transparent = true,
-    }
+  options = {
+    transparent = true,
+  }
 })
 vim.cmd("colorscheme nightfox")
 
@@ -273,7 +273,7 @@ require("lualine").setup({
       },
     },
     lualine_x = { "filetype", },
-    lualine_y = { },
+    lualine_y = {},
   },
   options = {
     section_separators = { left = "", right = "" },
@@ -283,7 +283,7 @@ require("lualine").setup({
 
 -- indent blankline ----------------------
 
-require("ibl").setup { }
+require("ibl").setup {}
 
 -- telescope ----------------------
 
@@ -412,11 +412,11 @@ require('mason-lspconfig').setup_handlers({ function(server)
 end })
 
 -- keyboard shortcut
-local attach_lsp_mappings = function ()
+local attach_lsp_mappings = function()
   local set = function(mode, lhs, rhs)
     vim.keymap.set(mode, lhs, rhs, { buffer = true })
   end
-  set('n', 'K',  vim.lsp.buf.hover)
+  set('n', 'K', vim.lsp.buf.hover)
   set('n', 'g=', vim.lsp.buf.format)
   set('n', 'gr', vim.lsp.buf.references)
   set('n', 'gd', vim.lsp.buf.definition)
@@ -487,7 +487,7 @@ cmp.setup({
     { name = "nvim_lsp" },
     -- { name = "buffer" },
     -- { name = "path" },
-    { name = "emoji", option = { insert = true }, },
+    { name = "emoji",    option = { insert = true }, },
     { name = "skkeleton" },
   },
   -- view = {
