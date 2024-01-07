@@ -19,6 +19,8 @@ require("lazy").setup({
   "tpope/vim-commentary",
   "tpope/vim-repeat",
   "junegunn/vim-easy-align",
+  -- motions
+  "rhysd/clever-f.vim",
   -- textobj
   { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
   -- colorschem
@@ -61,6 +63,7 @@ require("lazy").setup({
     },
   },
   -- "nvimdev/lspsaga.nvim",
+  "nvimtools/none-ls.nvim",
 
   -- language specific
   { "sankantsu/satysfi.nvim", dev = true },
@@ -83,6 +86,9 @@ require("lazy").setup({
   -- skk
   { 'vim-skk/skkeleton',  dependencies = { "vim-denops/denops.vim" }, },
   { 'rinx/cmp-skkeleton', dependencies = { 'hrsh7th/nvim-cmp', 'vim-skk/skkeleton' }, },
+  -- migemo search
+  "lambdalisue/kensaku.vim",
+  "lambdalisue/kensaku-search.vim",
 }, { -- lazy config
   dev = {
     path = "~/git",
@@ -196,6 +202,9 @@ vim.keymap.set("n", "<leader>sf", ":call ResetFileType()<CR>")
 -- clear screen and stop highlighting
 vim.keymap.set("n", "<ESC><ESC>", ":<C-u>nohlsearch<CR><C-l>", { silent = true })
 
+-- migemo search
+vim.keymap.set("c", "<CR>", "<Plug>(kensaku-search-replace)<CR>")
+
 -- insert mode ----------------------
 
 -- move forward/backword (emacs style)
@@ -246,6 +255,12 @@ function! SwitchTab()
     endif
 endfunction
 ]]
+
+-- clever-f ------------------------
+
+vim.g.clever_f_smart_case = 1
+vim.g.clever_f_use_migemo = 1
+vim.g.clever_f_fix_key_direction = 1
 
 -- easy align ----------------------
 
@@ -410,6 +425,12 @@ require('mason-lspconfig').setup {
 require('mason-lspconfig').setup_handlers({ function(server)
   require('lspconfig')[server].setup {}
 end })
+
+require("null-ls").setup({
+    sources = {
+        require("null-ls").builtins.formatting.stylua,
+    },
+})
 
 -- keyboard shortcut
 local attach_lsp_mappings = function()
