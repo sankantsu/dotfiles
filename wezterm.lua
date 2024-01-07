@@ -27,12 +27,13 @@ config.font = wezterm.font_with_fallback {
 config.font_size = 21.0
 
 -- key bindings
-config.leader = { mods = 'CTRL', key = 'b', timeout_milliseconds = 1000 }
+local leader_key = ';'
+config.leader = { mods = 'CTRL', key = leader_key, timeout_milliseconds = 1000 }
 config.keys = {
     {
         mods = 'LEADER|CTRL',
-        key = 'b',
-        action = act.SendKey { key = 'b', mods = 'CTRL' },
+        key = leader_key,
+        action = act.SendKey { key = leader_key, mods = 'CTRL' },
     },
     -- quick select
     {
@@ -71,7 +72,7 @@ config.keys = {
         mods = 'LEADER',
         key = ',',
         action = act.PromptInputLine {
-            description = 'Wezterm: set tab title',
+            description = '(wezterm) Set tab title:',
             action = wezterm.action_callback(function(win,pane,line)
                 if line then
                     win:active_tab():set_title(line)
@@ -79,17 +80,23 @@ config.keys = {
             end),
         },
     },
+    {
+        mods = 'CTRL',
+        key = '@',
+        action = act.Nop, -- disable mysterious "activate 2nd tab"
+    },
     -- workspace
     {
         mods = 'LEADER',
-        key = 's',
-        action = act.ShowLauncherArgs { flags = 'WORKSPACES' },
+        key = 'a',
+        action = act.ShowLauncherArgs { flags = 'WORKSPACES' , title = "Select workspace" },
     },
     {
+        -- Rename workspace
         mods = 'LEADER',
         key = '$',
         action = act.PromptInputLine {
-            description = 'Wezterm: set workspace title',
+            description = '(wezterm) Set workspace title:',
             action = wezterm.action_callback(function(win,pane,line)
                 if line then
                     wezterm.mux.rename_workspace(
@@ -99,6 +106,52 @@ config.keys = {
                 end
             end),
         },
+    },
+    {
+        -- Create new workspace
+        mods = 'LEADER|SHIFT',
+        key = 'S',
+        action = act.PromptInputLine {
+            description = "(wezterm) Create new workspace:",
+            action = wezterm.action_callback(function(window, pane, line)
+                if line then
+                    window:perform_action(
+                        act.SwitchToWorkspace {
+                            name = line,
+                        },
+                        pane
+                    )
+                end
+            end),
+        },
+    },
+    {
+        -- Switch between workspaces
+        mods = 'LEADER',
+        key = 's',
+        action = wezterm.action_callback (function (win, pane)
+            local workspaces = {}
+            for i, name in ipairs(wezterm.mux.get_workspace_names()) do
+                table.insert(workspaces, {
+                    id = name,
+                    label = string.format("%d. %s", i, name),
+                })
+            end
+            local current = wezterm.mux.get_active_workspace()
+            win:perform_action(act.InputSelector {
+                action = wezterm.action_callback(function (_, _, id, label)
+                    if not id and not label then
+                        wezterm.log_info "Workspace selection canceled"
+                    else
+                        win:perform_action(act.SwitchToWorkspace { name = id }, pane)
+                    end
+                end),
+                title = "Switch workspace",
+                choices = workspaces,
+                fuzzy = true,
+                fuzzy_description = string.format("Switch workspace: %s -> ", current), -- requires nightly build
+            }, pane)
+        end),
     },
 }
 
