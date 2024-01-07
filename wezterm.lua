@@ -164,9 +164,9 @@ wezterm.on("update-status", function(window, pane)
     -- current working directory
     local cwd_uri = pane:get_current_working_dir()
     if cwd_uri then
-        cwd_uri = cwd_uri:sub(8) -- trim 'file://'
-        local slash = cwd_uri:find("/")
-        local cwd = cwd_uri:sub(slash)
+        -- Type of cwd_uri changed from string to Url object
+        -- see, https://wezfurlong.org/wezterm/config/lua/wezterm.url/Url.html
+        local cwd = cwd_uri.file_path
         table.insert(cells, cwd)
     end
 
