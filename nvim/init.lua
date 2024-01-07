@@ -13,6 +13,9 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
+local environ = vim.loop.os_environ()
+local local_plugin_dev = environ["NVIM_LOCAL_PLUGIN_DEV"] and true or false
+
 require("lazy").setup({
     -- basic editing
     "tpope/vim-surround",
@@ -48,12 +51,12 @@ require("lazy").setup({
     { "nvim-telescope/telescope-file-browser.nvim", dependencies = { "telescope.nvim", "nvim-lua/plenary.nvim" } },
     {
         "sankantsu/telescope-zenn.nvim",
-        dev = true,
+        dev = local_plugin_dev,
         dependencies = { "telescope.nvim" },
     },
     {
-        dir = "~/git/telescope-heading.nvim",
-        dev = true,
+        "sankantsu/telescope-heading.nvim",
+        dev = local_plugin_dev,
         dependencies = { "telescope.nvim" },
     },
     -- 'nvim-telescope/telescope-ui-select.nvim',
@@ -83,7 +86,7 @@ require("lazy").setup({
     "nvimtools/none-ls.nvim",
 
     -- language specific
-    { "sankantsu/satysfi.nvim", dev = true },
+    { "sankantsu/satysfi.nvim", dev = local_plugin_dev },
     "kaarmu/typst.vim",
     -- completion
     "hrsh7th/nvim-cmp",
