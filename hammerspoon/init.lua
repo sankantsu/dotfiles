@@ -1,16 +1,15 @@
 hs.alert.show("Reloading HammerSpoon Config...")
 
+-- Toggle console window
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "H", function()
     hs.toggleConsole()
 end)
 
--- hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
---     hs.reload()
--- end)
-
+-- Auto reload config
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()
 
+-- Change window size
 hs.hotkey.bind({"cmd","alt","ctrl"}, "Up", function ()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
@@ -69,17 +68,13 @@ end)
 --   end
 -- )
 
--- hs.hotkey.bind({"cmd", "alt"}, "j", function()
---   hs.keycodes.setMethod("Alphanumeric (Google)")
---   hs.alert("Set system IME to Alphanumeric.")
--- end)
-
+-- Set IME to Alphanumeric when terminal app focused
 hs.window.filter.default:subscribe(
   hs.window.filter.windowFocused,
   function (window, appName, event)
-    if appName == "WezTerm" then
+    local terminal = "WezTerm"
+    if appName == terminal then
       hs.keycodes.setMethod("Alphanumeric (Google)")
-      hs.alert(string.format("Wezterm focused and set IME to Alphanumeric!", appName))
     end
   end
 )
