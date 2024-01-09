@@ -159,17 +159,49 @@ vim.g.tex_flavor = "latex"
 -- accept at character in control word
 vim.g.tex_stylish = 1
 
+-- digraphs ----------------------
+
+-- easy to remember digraphs for "あいうえお" and `、。`
+vim.cmd [[
+digraph aa 12354  "あ
+digraph ii 12356  "い
+digraph uu 12358  "う
+digraph ee 12360  "え
+digraph oo 12362  "お
+digraph AA 12450  "ア
+digraph II 12452  "イ
+digraph UU 12454  "ウ
+digraph EE 12456  "エ
+digraph OO 12458  "オ
+digraph xa 12353  "ぁ
+digraph xi 12355  "ぃ
+digraph xu 12357  "ぅ
+digraph xe 12359  "ぇ
+digraph xo 12361  "ぉ
+digraph xA 12449  "ァ
+digraph xI 12451  "ィ
+digraph xU 12453  "ゥ
+digraph xE 12455  "ェ
+digraph xO 12457  "ォ
+digraph ,, 12289  "、
+digraph .. 12290  "。
+]]
+
 -- key mappings ----------------------
 
 -- leader key ----------------------
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
 
-vim.keymap.set("n", "+", ",")
+-- motions
+vim.keymap.set({ "n", "x" }, "+", ",")
 
 -- left-right motions
 vim.keymap.set({ "n", "x" }, "<space>h", "^")
 vim.keymap.set({ "n", "x" }, "<space>l", "$")
+
+-- "f" command with digraphs
+vim.keymap.set({ "n", "x", "o" }, "<space>f", "f<C-k>")
 
 -- up-down motions (display-line)
 vim.keymap.set({ "n", "v" }, "<C-n>", "gj")
