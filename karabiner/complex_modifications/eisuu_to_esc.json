@@ -1,8 +1,8 @@
 {
-  "title": "eisuu to esc for vi",
+  "title": "Eisuu to ESC",
   "rules": [
     {
-      "description": "Change eisuu to esc while using terminal app",
+      "description": "Change eisuu to esc while input language is English",
       "manipulators":
       [
         {
@@ -17,13 +17,14 @@
           ],
           "conditions": [
             {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^com\\.github\\.wez\\.wezterm$"
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "language": "en"
+                }
               ]
             }
-          ],
-          "description": "eisuu to esc when using wezterm"
+          ]
         }
       ]
     }
