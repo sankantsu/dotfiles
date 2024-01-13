@@ -1,0 +1,32 @@
+{
+  "title": "Eisuu to ESC",
+  "rules": [
+    {
+      "description": "Change eisuu to esc while input language is English",
+      "manipulators":
+      [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "japanese_eisuu"
+          },
+          "to": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "language": "en"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
