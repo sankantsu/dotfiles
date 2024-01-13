@@ -1,0 +1,31 @@
+{
+  "title": "eisuu to esc for vi",
+  "rules": [
+    {
+      "description": "Change eisuu to esc while using terminal app",
+      "manipulators":
+      [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "japanese_eisuu"
+          },
+          "to": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.github\\.wez\\.wezterm$"
+              ]
+            }
+          ],
+          "description": "eisuu to esc when using wezterm"
+        }
+      ]
+    }
+  ]
+}
