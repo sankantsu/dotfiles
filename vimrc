@@ -149,7 +149,7 @@ nnoremap <Leader>d 0D
 nnoremap <Leader>ev :<C-u>vsplit $MYVIMRC<CR>
 
 " toggle fold column
-nnoremap <leader>f :call FoldColumnToggle()<CR>
+" nnoremap <leader>f :call FoldColumnToggle()<CR>
 
 " Delete current line without overwriting register
 nnoremap <leader>dd "_dd
