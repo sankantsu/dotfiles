@@ -127,6 +127,17 @@ require("lazy").setup({
     },
 })
 
+-- colorscheme ----------------------
+
+require("nightfox").setup({
+    options = {
+        transparent = true,
+    },
+})
+vim.cmd("colorscheme nightfox")
+
+-- options ----------------------
+
 -- line number
 vim.opt.number = true
 vim.opt.numberwidth = 2
@@ -161,9 +172,6 @@ vim.opt.incsearch = true
 -- command-line completion
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest,full"
-
--- toggle paste mode
-vim.opt.pastetoggle = "<F12>"
 
 -- default filetype for *.tex
 vim.g.tex_flavor = "latex"
@@ -351,15 +359,6 @@ vim.g.clever_f_fix_key_direction = 1
 -- easy align ----------------------
 
 vim.keymap.set("v", "ga", "<Plug>(EasyAlign)")
-
--- colorscheme ----------------------
-
-require("nightfox").setup({
-    options = {
-        transparent = true,
-    },
-})
-vim.cmd("colorscheme nightfox")
 
 -- status line ----------------------
 
