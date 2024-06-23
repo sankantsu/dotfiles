@@ -562,10 +562,27 @@ require("mason-lspconfig").setup_handlers({
     end,
 })
 
+-- language specific settings
+
 require("null-ls").setup({
     sources = {
         require("null-ls").builtins.formatting.stylua,
     },
+})
+
+-- see: https://minerva.mamansoft.net/Notes/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%9F%E3%82%89%E8%87%AA%E5%8B%95%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88+(nvim-lspconfig)
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(event)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = { "*.rs" },
+      callback = function()
+        vim.lsp.buf.format({
+          buffer = event.buf,
+          async = false,
+        })
+      end,
+    })
+  end,
 })
 
 -- keyboard shortcut
