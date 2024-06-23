@@ -105,6 +105,7 @@ require("lazy").setup({
     "hrsh7th/vim-vsnip",
     "hrsh7th/cmp-vsnip",
     "hrsh7th/cmp-emoji",
+    "hrsh7th/cmp-nvim-lsp-signature-help",
 
     -- denops
     "vim-denops/denops.vim",
@@ -645,6 +646,7 @@ cmp.setup({
         -- { name = "path" },
         { name = "emoji", option = { insert = true } },
         { name = "skkeleton" },
+        { name = "nvim_lsp_signature_help" },
     },
     -- view = {
     --   entries = "native", -- recommended setting of cmp-skkeleton?
