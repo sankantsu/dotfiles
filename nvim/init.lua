@@ -34,8 +34,18 @@ require("lazy").setup({
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons", opt = true },
     },
-    -- gitsigns
+    -- git
     "lewis6991/gitsigns.nvim",
+    "sindrets/diffview.nvim",
+    {
+      "pwntester/octo.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim",
+        "nvim-tree/nvim-web-devicons",
+      },
+      cmd = "Octo",
+    },
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
     -- autopair
@@ -370,6 +380,14 @@ require("lualine").setup({
         -- globalstatus = true,
     },
 })
+
+-- git ----------------------
+
+-- octo
+
+require('octo').setup {
+  enable_builtin = true,
+}
 
 -- git signs
 
