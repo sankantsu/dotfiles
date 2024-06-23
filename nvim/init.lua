@@ -24,6 +24,7 @@ require("lazy").setup({
     "junegunn/vim-easy-align",
     -- motions
     "rhysd/clever-f.vim",
+    "ggandor/leap.nvim",
     -- textobj
     { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
     -- colorschem
@@ -307,6 +308,28 @@ function! SwitchTab()
     endif
 endfunction
 ]])
+
+-- motions
+
+-- leap ----------------------
+
+require('leap').create_default_mappings()
+
+vim.api.nvim_set_hl(0, "LeapMatch", { fg = "green", bold = true, underline = true, nocombine = true })
+require('leap').opts.highlight_unlabeled_phase_one_targets = true
+
+require('leap').opts.equivalence_classes = {
+  ' \t\r\n',
+  'aあア',
+  'iいイ',
+  'uうウ',
+  'eえエ',
+  'oおオ',
+  'kかきくけこカキクケコ',
+  'sさしすせそサシスセソ',
+  'tたちつてとタチツテト',
+  'nなにぬねのナニヌネノ'
+}
 
 -- clever-f ------------------------
 
