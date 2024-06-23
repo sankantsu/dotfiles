@@ -574,7 +574,7 @@ require("null-ls").setup({
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(event)
         vim.api.nvim_create_autocmd("BufWritePre", {
-            pattern = { "*.rs" },
+            pattern = { "*.rs", "*.lua" },
             callback = function()
                 vim.lsp.buf.format({
                     buffer = event.buf,
