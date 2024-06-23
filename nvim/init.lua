@@ -23,7 +23,6 @@ require("lazy").setup({
     "tpope/vim-repeat",
     "junegunn/vim-easy-align",
     -- motions
-    "rhysd/clever-f.vim",
     "ggandor/leap.nvim",
     -- textobj
     { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
@@ -349,12 +348,6 @@ require("leap").opts.equivalence_classes = {
     "tたちつてとタチツテト",
     "nなにぬねのナニヌネノ",
 }
-
--- clever-f ------------------------
-
-vim.g.clever_f_smart_case = 1
-vim.g.clever_f_use_migemo = 1
-vim.g.clever_f_fix_key_direction = 1
 
 -- easy align ----------------------
 
