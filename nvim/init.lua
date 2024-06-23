@@ -675,7 +675,7 @@ cmp.setup({
 -- skk ----------------------
 
 vim.cmd([[
-call skkeleton#config({ 'globalJisyo': '~/.skk/SKK-JISYO.L' })
+call skkeleton#config({ 'globalDictionaries': ['~/.skk/SKK-JISYO.L'] })
 imap <C-j> <Plug>(skkeleton-enable)
 cmap <C-j> <Plug>(skkeleton-enable)
 
