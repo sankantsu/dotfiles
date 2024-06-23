@@ -38,13 +38,13 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "sindrets/diffview.nvim",
     {
-      "pwntester/octo.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
-        "nvim-tree/nvim-web-devicons",
-      },
-      cmd = "Octo",
+        "pwntester/octo.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "nvim-tree/nvim-web-devicons",
+        },
+        cmd = "Octo",
     },
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
@@ -182,7 +182,7 @@ vim.g.tex_stylish = 1
 -- digraphs ----------------------
 
 -- easy to remember digraphs for "あいうえお" and `、。`
-vim.cmd [[
+vim.cmd([[
 digraph aa 12354  "あ
 digraph ii 12356  "い
 digraph uu 12358  "う
@@ -205,7 +205,7 @@ digraph xE 12455  "ェ
 digraph xO 12457  "ォ
 digraph ,, 12289  "、
 digraph .. 12290  "。
-]]
+]])
 
 -- key mappings ----------------------
 
@@ -332,22 +332,22 @@ endfunction
 
 -- leap ----------------------
 
-require('leap').create_default_mappings()
+require("leap").create_default_mappings()
 
 vim.api.nvim_set_hl(0, "LeapMatch", { fg = "green", bold = true, underline = true, nocombine = true })
-require('leap').opts.highlight_unlabeled_phase_one_targets = true
+require("leap").opts.highlight_unlabeled_phase_one_targets = true
 
-require('leap').opts.equivalence_classes = {
-  ' \t\r\n',
-  'aあア',
-  'iいイ',
-  'uうウ',
-  'eえエ',
-  'oおオ',
-  'kかきくけこカキクケコ',
-  'sさしすせそサシスセソ',
-  'tたちつてとタチツテト',
-  'nなにぬねのナニヌネノ'
+require("leap").opts.equivalence_classes = {
+    " \t\r\n",
+    "aあア",
+    "iいイ",
+    "uうウ",
+    "eえエ",
+    "oおオ",
+    "kかきくけこカキクケコ",
+    "sさしすせそサシスセソ",
+    "tたちつてとタチツテト",
+    "nなにぬねのナニヌネノ",
 }
 
 -- clever-f ------------------------
@@ -385,9 +385,9 @@ require("lualine").setup({
 
 -- octo
 
-require('octo').setup {
-  enable_builtin = true,
-}
+require("octo").setup({
+    enable_builtin = true,
+})
 
 -- git signs
 
@@ -402,8 +402,8 @@ require("gitsigns").setup({
         end
 
         -- Navigation
-        map("n", "]c", gs.next_hunk);
-        map("n", "[c", gs.prev_hunk);
+        map("n", "]c", gs.next_hunk)
+        map("n", "[c", gs.prev_hunk)
 
         -- Actions
         map("n", "<leader>hs", gs.stage_hunk)
@@ -430,7 +430,7 @@ require("ibl").setup({})
 
 -- autopair
 
-require("nvim-autopairs").setup {}
+require("nvim-autopairs").setup({})
 
 -- telescope ----------------------
 
@@ -572,17 +572,17 @@ require("null-ls").setup({
 
 -- see: https://minerva.mamansoft.net/Notes/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%9F%E3%82%89%E8%87%AA%E5%8B%95%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88+(nvim-lspconfig)
 vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(event)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      pattern = { "*.rs" },
-      callback = function()
-        vim.lsp.buf.format({
-          buffer = event.buf,
-          async = false,
+    callback = function(event)
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = { "*.rs" },
+            callback = function()
+                vim.lsp.buf.format({
+                    buffer = event.buf,
+                    async = false,
+                })
+            end,
         })
-      end,
-    })
-  end,
+    end,
 })
 
 -- keyboard shortcut
