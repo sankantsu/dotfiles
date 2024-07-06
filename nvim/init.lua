@@ -49,6 +49,14 @@ require("lazy").setup({
     { "lukas-reineke/indent-blankline.nvim" },
     -- autopair
     { "windwp/nvim-autopairs", opts = {} },
+    -- filer
+    {
+        "stevearc/oil.nvim",
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "echasnovski/mini.icons" },
+        -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+    },
     -- UI
     {
         "nvim-telescope/telescope.nvim",
@@ -421,9 +429,30 @@ require("gitsigns").setup({
 
 require("ibl").setup({})
 
--- autopair
+-- autopair ----------------------
 
 require("nvim-autopairs").setup({})
+
+-- filer ----------------------
+
+require("oil").setup({
+    use_default_keymaps = false,
+    keymaps = {
+        ["g?"] = "actions.show_help",
+        ["<CR>"] = "actions.select",
+        ["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
+        ["<C-p>"] = "actions.preview",
+        ["<C-c>"] = "actions.close",
+        ["-"] = "actions.parent",
+        ["_"] = "actions.open_cwd",
+        ["`"] = "actions.cd",
+        ["~"] = { "actions.cd", opts = { scope = "tab" }, desc = ":tcd to the current oil directory" },
+        ["gs"] = "actions.change_sort",
+        ["gx"] = "actions.open_external",
+        ["g."] = "actions.toggle_hidden",
+        ["g\\"] = "actions.toggle_trash",
+    },
+})
 
 -- telescope ----------------------
 
