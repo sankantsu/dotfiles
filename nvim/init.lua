@@ -695,6 +695,8 @@ cmp.setup({
         ["<C-l>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-f>"] = cmp.mapping.scroll_docs(1),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-1),
     }),
     experimental = {
         ghost_text = true,
