@@ -155,6 +155,34 @@ config.keys = {
     },
 }
 
+config.key_tables = {
+    -- Search mode key mappings
+    -- Almost default but use 'SHIFT + Enter' to search Backward
+    -- Reference: https://wezfurlong.org/wezterm/scrollback.html#configurable-search-mode-key-assignments
+    -- TODO: Can we add key mapping for search mode without enumerating all default mappings?
+    search_mode = {
+        { key = "Enter", mods = "NONE", action = act.CopyMode("PriorMatch") },
+        { key = "Enter", mods = "SHIFT", action = act.CopyMode("NextMatch") },
+        { key = "Escape", mods = "NONE", action = act.CopyMode("Close") },
+        { key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
+        { key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
+        { key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
+        { key = "u", mods = "CTRL", action = act.CopyMode("ClearPattern") },
+        {
+            key = "PageUp",
+            mods = "NONE",
+            action = act.CopyMode("PriorMatchPage"),
+        },
+        {
+            key = "PageDown",
+            mods = "NONE",
+            action = act.CopyMode("NextMatchPage"),
+        },
+        { key = "UpArrow", mods = "NONE", action = act.CopyMode("PriorMatch") },
+        { key = "DownArrow", mods = "NONE", action = act.CopyMode("NextMatch") },
+    },
+}
+
 -- statusline
 -- https://wezfurlong.org/wezterm/config/lua/window/set_right_status.html
 wezterm.on("update-status", function(window, pane)
