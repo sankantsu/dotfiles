@@ -386,9 +386,11 @@ require("lualine").setup({
 
 -- octo
 
-require("octo").setup({
-    enable_builtin = true,
-})
+if vim.fn.executable("gh") == 1 then
+    require("octo").setup({
+        enable_builtin = true,
+    })
+end
 
 -- git signs
 
