@@ -33,6 +33,8 @@ require("lazy").setup({
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons", opt = true },
     },
+    -- live share
+    "jbyuki/instant.nvim",
     -- git
     "lewis6991/gitsigns.nvim",
     "sindrets/diffview.nvim",
@@ -381,6 +383,10 @@ require("lualine").setup({
         -- globalstatus = true,
     },
 })
+
+-- live share
+
+vim.g.instant_username = "godai"
 
 -- git ----------------------
 
