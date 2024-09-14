@@ -341,7 +341,8 @@ endfunction
 
 -- leap ----------------------
 
-require("leap").create_default_mappings()
+vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)")
+vim.keymap.set({ "n", "x", "o" }, "<space>s", "<Plug>(leap-backward)")
 
 vim.api.nvim_set_hl(0, "LeapMatch", { fg = "green", bold = true, underline = true, nocombine = true })
 require("leap").opts.highlight_unlabeled_phase_one_targets = true
