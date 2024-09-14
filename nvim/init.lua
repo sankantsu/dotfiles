@@ -620,7 +620,7 @@ local attach_lsp_mappings = function()
     local set = function(mode, lhs, rhs)
         vim.keymap.set(mode, lhs, rhs, { buffer = true })
     end
-    set("n", "K", vim.lsp.buf.hover)
+    -- set("n", "K", vim.lsp.buf.hover)  -- become default since 0.10.0
     set("n", "g=", vim.lsp.buf.format)
     set("n", "gr", vim.lsp.buf.references)
     set("n", "gd", vim.lsp.buf.definition)
