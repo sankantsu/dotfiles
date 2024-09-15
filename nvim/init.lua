@@ -396,6 +396,7 @@ vim.g.instant_username = "godai"
 if vim.fn.executable("gh") == 1 then
     require("octo").setup({
         enable_builtin = true,
+        default_to_projects_v2 = true,
     })
 end
 
