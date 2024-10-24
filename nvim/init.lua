@@ -130,6 +130,8 @@ require("lazy").setup({
     -- migemo search
     "lambdalisue/kensaku.vim",
     "lambdalisue/kensaku-search.vim",
+    -- git
+    "lambdalisue/vim-gin",
 }, { -- lazy config
     dev = {
         path = "~/git",
