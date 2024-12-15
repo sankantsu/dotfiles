@@ -245,10 +245,6 @@ vim.keymap.set({ "n", "x", "o" }, "<space>f", "f<C-k>")
 vim.keymap.set({ "n", "v" }, "<C-n>", "gj")
 vim.keymap.set({ "n", "v" }, "<C-p>", "gk")
 
--- page-top page-bottom
--- vim.keymap.set({ "n", "v" }, "H", "H")
--- vim.keymap.set({ "n", "v" }, "L", "L")
-
 -- move aroung buffer list
 vim.keymap.set("n", "[b", ":<C-u>bprev<CR>")
 vim.keymap.set("n", "]b", ":<C-u>bnext<CR>")
