@@ -108,6 +108,7 @@ require("lazy").setup({
     -- language specific
     { "sankantsu/satysfi.nvim", dev = local_plugin_dev },
     "kaarmu/typst.vim",
+    "chomosuke/typst-preview.nvim",
     -- completion
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-nvim-lsp",
