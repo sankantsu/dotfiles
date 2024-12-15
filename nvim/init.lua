@@ -150,6 +150,9 @@ vim.cmd("colorscheme nightfox")
 
 -- options ----------------------
 
+-- disable mouse
+vim.opt.mouse = ""
+
 -- line number
 vim.opt.number = true
 vim.opt.numberwidth = 2
