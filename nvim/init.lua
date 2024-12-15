@@ -157,6 +157,9 @@ vim.opt.mouse = ""
 vim.opt.number = true
 vim.opt.numberwidth = 2
 
+-- show tab and trailing spaces
+vim.opt.list = true
+
 -- display last line as much as possible (do not replace to '@')
 -- vim.opt.display:append { "lastline" }
 
