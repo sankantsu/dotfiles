@@ -272,12 +272,22 @@ vim.keymap.set({ "n", "v" }, "<C-n>", "gj")
 vim.keymap.set({ "n", "v" }, "<C-p>", "gk")
 
 -- move aroung buffer list
-vim.keymap.set("n", "[b", ":<C-u>bprev<CR>")
-vim.keymap.set("n", "]b", ":<C-u>bnext<CR>")
+vim.cmd([[
+    nmap ]b :bnext<CR><Plug>(submode-bufmove)
+    nmap [b :bprevious<CR><Plug>(submode-bufmove)
+    nmap <Plug>(submode-bufmove)] :bnext<CR><Plug>(submode-bufmove)
+    nmap <Plug>(submode-bufmove)[ :bprevious<CR><Plug>(submode-bufmove)
+    nmap <Plug>(submode-bufmove) <Nop>
+]])
 
 -- move around quickfix list
-vim.keymap.set("n", "[c", ":<C-u>cprev<CR>")
-vim.keymap.set("n", "]c", ":<C-u>cnext<CR>")
+vim.cmd([[
+    nmap ]c :cnext<CR><Plug>(submode-quickfix)
+    nmap [c :cprevious<CR><Plug>(submode-quickfix)
+    nmap <Plug>(submode-quickfix)] :cnext<CR><Plug>(submode-quickfix)
+    nmap <Plug>(submode-quickfix)[ :cprevious<CR><Plug>(submode-quickfix)
+    nmap <Plug>(submode-quickfix) <Nop>
+]])
 
 -- move around tab pages
 vim.keymap.set("n", "<C-h>", ':<C-u>execute "tabprevious " . v:count1<CR>', { silent = true })
@@ -444,8 +454,14 @@ require("gitsigns").setup({
         end
 
         -- Navigation
-        map("n", "]h", gs.next_hunk)
-        map("n", "[h", gs.prev_hunk)
+        -- `]h` or `[h` starts submode, then `]`, `[` moves around hunks.
+        vim.cmd([[
+            nmap <buffer> ]h :lua require("gitsigns").next_hunk()<CR><Plug>(submode-gitsigns)
+            nmap <buffer> [h :lua require("gitsigns").prev_hunk()<CR><Plug>(submode-gitsigns)
+            nmap <buffer> <Plug>(submode-gitsigns)] :lua require("gitsigns").next_hunk()<CR><Plug>(submode-gitsigns)
+            nmap <buffer> <Plug>(submode-gitsigns)[ :lua require("gitsigns").prev_hunk()<CR><Plug>(submode-gitsigns)
+            nmap <buffer> <Plug>(submode-gitsigns) <Nop>
+        ]])
 
         -- Actions
         map("n", "<leader>hs", gs.stage_hunk)
@@ -663,8 +679,13 @@ local attach_lsp_mappings = function()
     set("n", "gn", vim.lsp.buf.rename)
     set("n", "ga", vim.lsp.buf.code_action)
     set("n", "ge", vim.diagnostic.open_float)
-    set("n", "g]", vim.diagnostic.goto_next)
-    set("n", "g[", vim.diagnostic.goto_prev)
+    vim.cmd([[
+        nmap <buffer> ]d :lua vim.diagnostic.goto_next()<CR><Plug>(submode-diagnostics)
+        nmap <buffer> [d :lua vim.diagnostic.goto_prev()<CR><Plug>(submode-diagnostics)
+        nmap <buffer> <Plug>(submode-diagnostics)] :lua vim.diagnostic.goto_next()<CR><Plug>(submode-diagnostics)
+        nmap <buffer> <Plug>(submode-diagnostics)[ :lua vim.diagnostic.goto_prev()<CR><Plug>(submode-diagnostics)
+        nmap <buffer> <Plug>(submode-diagnostics) <Nop>
+    ]])
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
