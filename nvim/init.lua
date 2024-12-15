@@ -18,10 +18,36 @@ local local_plugin_dev = environ["NVIM_LOCAL_PLUGIN_DEV"] and true or false
 
 require("lazy").setup({
     -- basic editing
-    "tpope/vim-surround",
     "tpope/vim-commentary",
     "tpope/vim-repeat",
     "junegunn/vim-easy-align",
+    -- sandwich
+    {
+        "machakann/vim-sandwich",
+        init = function()
+            vim.g.sandwich_no_default_key_mappings = 1
+        end,
+        config = function()
+            local function concat(tt)
+                local v = {}
+                for _, t in ipairs(tt) do
+                    vim.list_extend(v, t)
+                end
+                return v
+            end
+            vim.cmd([[runtime macros/sandwich/keymap/surround.vim]])
+            vim.g["sandwich#recipes"] = concat({
+                vim.g["sandwich#recipes"],
+                {
+                    -- Triple backquote block for markdown codeblock
+                    {
+                        input = { "c" },
+                        buns = { "```", "```" },
+                    },
+                },
+            })
+        end,
+    },
     -- motions
     "ggandor/leap.nvim",
     -- textobj
