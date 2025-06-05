@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# usage: eval $(find-ssh-agent)
+#
+# This program's output looks like below,
+# export SSH_AUTH_SOCK=<path/to/socket-of-ssh-agent>
+# `eval` this output will set the appropriate environment variable to use valid agent.
+#
+# Inspired by wwalker's `ssh-find-agent` program, and overly simplified to my use case.
+# https://github.com/wwalker/ssh-find-agent/tree/master
+
+find /tmp/ssh-* -name 'agent\.*' | \
+while read a; do
+    dirname=`dirname $a`
+    SSH_AUTH_SOCK=$a ssh-add -l >/dev/null 2>&1
+    if [ $? -eq 2 ]; then
+        # Remove dead agent
+        echo "Removing $dirname..."
+        rm -rf $dirname
+    else
+        echo "export SSH_AUTH_SOCK=$a"
+        exit 0
+    fi
+done

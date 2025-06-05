@@ -1,0 +1,10 @@
+#!/bin/bash
+
+osc52 ()
+{
+    echo -ne "\e]52;;";
+    base64 | tr -d "\n";
+    echo -ne "\e\\"
+}
+
+osc52
