@@ -321,6 +321,13 @@ vim.keymap.set("n", "<leader>rr", ":redraw!<CR>")
 -- reset filetype
 vim.keymap.set("n", "<leader>sf", ":call ResetFileType()<CR>")
 
+-- make n/N always search forward/backward
+-- Ref: https://stackoverflow.com/questions/18523150/make-n-always-search-forwards-regardless-of-whether-or-was-used-for-searc
+vim.cmd([[
+noremap <expr> n 'Nn'[v:searchforward]
+noremap <expr> N 'nN'[v:searchforward]
+]])
+
 -- clear screen and stop highlighting
 vim.keymap.set("n", "<ESC><ESC>", ":<C-u>nohlsearch<CR><C-l>", { silent = true })
 
