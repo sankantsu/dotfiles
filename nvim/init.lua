@@ -329,7 +329,7 @@ vim.keymap.set("c", "<CR>", "<Plug>(kensaku-search-replace)<CR>")
 
 -- insert mode ----------------------
 
--- move forward/backword (emacs style)
+-- move forward/backward (emacs style)
 vim.keymap.set("i", "<C-f>", "<Right>")
 vim.keymap.set("i", "<C-b>", "<Left>")
 
