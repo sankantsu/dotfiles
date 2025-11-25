@@ -1,0 +1,40 @@
+-- Pull in the wezterm API
+local wezterm = require 'wezterm'
+
+-- This will hold the configuration.
+local config = wezterm.config_builder()
+
+-- This is where you actually apply your config choices
+
+-- WSL settings
+config.default_domain = 'WSL:Ubuntu'
+
+config.wsl_domains = {
+  {
+    name = 'WSL:Ubuntu',
+    distribution = 'Ubuntu',
+    -- You also need to source wezterm.sh in your shell to apply default_cwd to new windows/panes.
+    -- https://github.com/wezterm/wezterm/blob/main/assets/shell-integration/wezterm.sh
+    default_cwd = "~",
+  },
+}
+
+-- color sheme
+config.color_scheme = "nightfox"
+
+-- font settings
+config.font = wezterm.font_with_fallback({
+    {
+        family = "HackGen Console",
+        -- weight = "Bold",
+    },
+    {
+        family = "JetBrains Mono",
+        harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+        -- weight = "Bold",
+    },
+})
+config.font_size = 13.0
+
+-- and finally, return the configuration to wezterm
+return config
