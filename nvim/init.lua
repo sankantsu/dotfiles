@@ -518,6 +518,9 @@ require("oil").setup({
     },
 })
 
+vim.keymap.set("n", "<leader>o", ":Oil<CR>")
+vim.keymap.set("n", "<leader>to", ":tab Oil<CR>")
+
 -- telescope ----------------------
 
 local telescope = require("telescope")
