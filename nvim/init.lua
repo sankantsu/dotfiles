@@ -519,7 +519,8 @@ require("oil").setup({
 })
 
 vim.keymap.set("n", "<leader>o", ":Oil<CR>")
-vim.keymap.set("n", "<leader>to", ":tab Oil<CR>")
+-- `:tab Oil` does not work as expected unless executed in the first tab.
+vim.keymap.set("n", "<leader>to", ":tabnew<CR>:Oil<CR>")
 
 -- telescope ----------------------
 
