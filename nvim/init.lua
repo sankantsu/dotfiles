@@ -211,8 +211,30 @@ vim.opt.softtabstop = 2
 vim.opt.smarttab = true
 vim.opt.expandtab = true
 
--- always use system clipboard
-vim.opt.clipboard:prepend({ "unnamedplus" })
+-- clipboard
+-- Use OSC52 for all yanks
+
+vim.o.clipboard = "unnamedplus"
+
+-- Paste from OSC 52 often cause problem (e.g. timeout), but we still need some paste implementation for clipboard provider.
+local function paste()
+  return {
+    vim.fn.split(vim.fn.getreg(""), "\n"),
+    vim.fn.getregtype(""),
+  }
+end
+
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = paste,
+    ["*"] = paste,
+  },
+}
 
 -- search setting
 vim.opt.ignorecase = true
