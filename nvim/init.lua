@@ -113,9 +113,16 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
     {
         "williamboman/mason.nvim",
-        build = ":MasonUpdate", -- :MasonUpdate updates registry contents
+        opts = {}
     },
-    "williamboman/mason-lspconfig.nvim",
+    {
+        "mason-org/mason-lspconfig.nvim",
+        opts = {},
+        dependencies = {
+            { "mason-org/mason.nvim", opts = {} },
+            "neovim/nvim-lspconfig",
+        },
+    },
     { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
     {
         "SmiteshP/nvim-navbuddy",
@@ -632,25 +639,6 @@ require("nvim-treesitter.configs").setup({
     indent = {
         enable = true,
     },
-})
-
--- LSP (language server) ----------------------
-
-require("mason").setup({
-    registries = {
-        "github:sankantsu/satysfi-mason-registry",
-        "github:mason-org/mason-registry",
-    },
-    log_level = vim.log.levels.DEBUG,
-})
-
-require("mason-lspconfig").setup({
-    -- ensure_installed = { "lua_ls", "satysfi_ls", },
-})
-require("mason-lspconfig").setup_handlers({
-    function(server)
-        require("lspconfig")[server].setup({})
-    end,
 })
 
 -- language specific settings
