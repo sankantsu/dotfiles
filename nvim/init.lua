@@ -183,6 +183,9 @@ vim.cmd("colorscheme nightfox")
 
 -- options ----------------------
 
+-- utf-8 bomb
+vim.opt.bomb = true
+
 -- disable mouse
 vim.opt.mouse = ""
 
