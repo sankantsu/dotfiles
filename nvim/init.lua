@@ -48,8 +48,6 @@ require("lazy").setup({
             })
         end,
     },
-    -- motions
-    "ggandor/leap.nvim",
     -- textobj
     { "kana/vim-textobj-user", dependencies = { "kana/vim-textobj-entire" } },
     -- colorschem
@@ -64,15 +62,6 @@ require("lazy").setup({
     -- git
     "lewis6991/gitsigns.nvim",
     "sindrets/diffview.nvim",
-    {
-        "pwntester/octo.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "nvim-tree/nvim-web-devicons",
-        },
-        cmd = "Octo",
-    },
     -- visual support
     { "lukas-reineke/indent-blankline.nvim" },
     -- autopair
@@ -401,27 +390,6 @@ endfunction
 
 -- motions
 
--- leap ----------------------
-
-vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)")
-vim.keymap.set({ "n", "x", "o" }, "<space>s", "<Plug>(leap-backward)")
-
-vim.api.nvim_set_hl(0, "LeapMatch", { fg = "green", bold = true, underline = true, nocombine = true })
-require("leap").opts.highlight_unlabeled_phase_one_targets = true
-
-require("leap").opts.equivalence_classes = {
-    " \t\r\n",
-    "aあア",
-    "iいイ",
-    "uうウ",
-    "eえエ",
-    "oおオ",
-    "kかきくけこカキクケコ",
-    "sさしすせそサシスセソ",
-    "tたちつてとタチツテト",
-    "nなにぬねのナニヌネノ",
-}
-
 -- easy align ----------------------
 
 vim.keymap.set("v", "ga", "<Plug>(EasyAlign)")
@@ -452,15 +420,6 @@ require("lualine").setup({
 vim.g.instant_username = "godai"
 
 -- git ----------------------
-
--- octo
-
-if vim.fn.executable("gh") == 1 then
-    require("octo").setup({
-        enable_builtin = true,
-        default_to_projects_v2 = true,
-    })
-end
 
 -- git signs
 
