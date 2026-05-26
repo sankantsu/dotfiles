@@ -96,8 +96,6 @@ require("lazy").setup({
     },
     -- 'nvim-telescope/telescope-ui-select.nvim',
     "stevearc/dressing.nvim",
-    -- tree-sitter
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     -- lsp
     { "SmiteshP/nvim-navic" },
     {
@@ -584,29 +582,6 @@ vim.keymap.set("n", "<leader>ft", require("telescope-tabs").list_tabs, {})
 -- language specific
 
 require("satysfi-nvim").setup()
-
--- treesitter ----------------------
-
-require("nvim-treesitter.configs").setup({
-    -- ensure_installed = {
-    --   "satysfi",
-    -- },
-    highlight = {
-        enable = true,
-    },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "gs",
-            node_incremental = "gs",
-            scope_incremental = "gS",
-            node_decremental = "gm",
-        },
-    },
-    indent = {
-        enable = true,
-    },
-})
 
 -- language specific settings
 
