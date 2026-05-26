@@ -109,7 +109,6 @@ require("lazy").setup({
         },
     },
     -- language specific
-    { "sankantsu/satysfi.nvim", dev = local_plugin_dev },
     "kaarmu/typst.vim",
     "chomosuke/typst-preview.nvim",
     -- completion
@@ -578,10 +577,6 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 vim.keymap.set("n", "<leader>fz", telescope.extensions.zenn.article_picker, {})
 vim.keymap.set("n", "<leader>fd", telescope.extensions.heading.heading, {})
 vim.keymap.set("n", "<leader>ft", require("telescope-tabs").list_tabs, {})
-
--- language specific
-
-require("satysfi-nvim").setup()
 
 -- language specific settings
 
