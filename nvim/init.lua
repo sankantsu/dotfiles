@@ -110,25 +110,11 @@ require("lazy").setup({
     -- tree-sitter
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     -- lsp
-    "neovim/nvim-lspconfig",
-    {
-        "williamboman/mason.nvim",
-        opts = {}
-    },
-    {
-        "mason-org/mason-lspconfig.nvim",
-        opts = {},
-        dependencies = {
-            { "mason-org/mason.nvim", opts = {} },
-            "neovim/nvim-lspconfig",
-        },
-    },
-    { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
+    { "SmiteshP/nvim-navic" },
     {
         "SmiteshP/nvim-navbuddy",
         dev = false,
         dependencies = {
-            "neovim/nvim-lspconfig",
             "SmiteshP/nvim-navic",
             "MunifTanjim/nui.nvim",
             -- "numToStr/Comment.nvim",        -- Optional
@@ -164,6 +150,9 @@ require("lazy").setup({
         path = "~/git",
     },
 })
+
+-- lsp servers ----------------------
+vim.lsp.enable("pylsp")
 
 -- colorscheme ----------------------
 
