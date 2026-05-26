@@ -364,6 +364,8 @@ noremap <expr> N 'nN'[v:searchforward]
 vim.keymap.set("n", "<ESC><ESC>", ":<C-u>nohlsearch<CR><C-l>", { silent = true })
 
 -- migemo search
+-- To avoid the pattern replaced with migemo, use <C-CR><CR>
+-- TODO: Figure out why this hack works...
 vim.keymap.set("c", "<CR>", "<Plug>(kensaku-search-replace)<CR>")
 
 -- insert mode ----------------------
