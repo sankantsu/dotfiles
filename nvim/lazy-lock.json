@@ -30,7 +30,6 @@
   "telescope-zenn.nvim": { "branch": "main", "commit": "c2cc6bc48ba4663f2fbfa656a747fb7972b91ba3" },
   "telescope.nvim": { "branch": "master", "commit": "37dc9233a473dd6c3f54456ef9994d8f77c80211" },
   "typst-preview.nvim": { "branch": "master", "commit": "06778d1b3d4d29c34f1faf80947b586f403689ba" },
-  "typst.vim": { "branch": "main", "commit": "4d18ced62599ffe5b3c0e5e49566d5456121bc02" },
   "vim-commentary": { "branch": "master", "commit": "64a654ef4a20db1727938338310209b6a63f60c9" },
   "vim-easy-align": { "branch": "master", "commit": "9815a55dbcd817784458df7a18acacc6f82b1241" },
   "vim-gin": { "branch": "main", "commit": "0d0fc6efa72a65bace3bd4ae1f76ad753006ca0d" },
