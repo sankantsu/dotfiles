@@ -140,6 +140,7 @@ require("lazy").setup({
 
 -- lsp servers ----------------------
 vim.lsp.enable("pylsp")
+vim.lsp.enable("rust_analyzer")
 
 -- colorscheme ----------------------
 
