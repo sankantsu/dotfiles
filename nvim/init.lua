@@ -135,7 +135,6 @@ require("lazy").setup({
             "telescope.nvim", -- Optional
         },
     },
-    -- "nvimdev/lspsaga.nvim",
     "nvimtools/none-ls.nvim",
 
     -- language specific
@@ -152,12 +151,6 @@ require("lazy").setup({
 
     -- denops
     "vim-denops/denops.vim",
-    -- ddc
-    -- conflicts with nvim-cmp
-    -- 'Shougo/ddc.vim',
-    -- 'Shougo/ddc-ui-native',
-    -- 'Shougo/ddc-filter-matcher_head',
-    -- 'Shougo/ddc-filter-sorter_rank',
     -- skk
     { "vim-skk/skkeleton", dependencies = { "vim-denops/denops.vim" } },
     { "rinx/cmp-skkeleton", dependencies = { "hrsh7th/nvim-cmp", "vim-skk/skkeleton" } },
@@ -721,25 +714,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- LSP handlers
--- vim.lsp.handlers["textDocument/definition"] = function (_, result)
---   print(vim.inspect(result))
--- end
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false })
--- Reference highlight
--- vim.cmd [[
--- set updatetime=500
--- highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
--- highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
--- highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
--- augroup lsp_document_highlight
---   autocmd!
---   autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
---   autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
--- augroup END
--- ]]
-
--- require("lspsaga").setup()
 
 -- breadcrumb
 require("nvim-navic").setup({
@@ -806,23 +782,3 @@ call skkeleton#register_kanatable("rom", {
   \ "xn": ["ん"],
   \ })
 ]])
-
--- ddc configuration for skkeleton
--- vim.cmd [[
--- call ddc#custom#patch_global('ui', 'native')
--- call ddc#custom#patch_global('sources', ['skkeleton'])
--- call ddc#custom#patch_global('sourceOptions', {
---     \   '_': {
---     \     'matchers': ['matcher_head'],
---     \     'sorters': ['sorter_rank']
---     \   },
---     \   'skkeleton': {
---     \     'mark': 'skkeleton',
---     \     'matchers': ['skkeleton'],
---     \     'sorters': [],
---     \     'minAutoCompleteLength': 2,
---     \     'isVolatile': v:true,
---     \   },
---     \ })
--- call ddc#enable()
--- ]]
