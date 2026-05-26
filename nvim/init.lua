@@ -107,7 +107,6 @@ require("lazy").setup({
         },
     },
     -- language specific
-    "kaarmu/typst.vim",
     "chomosuke/typst-preview.nvim",
     -- completion
     "hrsh7th/nvim-cmp",
