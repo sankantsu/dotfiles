@@ -1,0 +1,17 @@
+﻿[tools]
+node                = "lts"
+deno                = "latest"
+uv                  = "latest"
+neovim              = "0.12.2"
+fd                   = "latest"
+ripgrep              = "latest"
+"npm:@openai/codex"  = "latest"
+"npm:@github/copilot" = "latest"
+
+[tasks.install-pylsp]
+description = "Install python-lsp-server via uv tool"
+run = "uv tool install 'python-lsp-server[all]'"
+
+[tasks.setup]
+description = "Full user-level environment setup"
+depends = ["install-pylsp"]
