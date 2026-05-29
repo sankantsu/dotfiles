@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+
 # usage: eval $(find-ssh-agent)
 #
 # This program's output looks like below,
@@ -9,16 +9,54 @@
 # Inspired by wwalker's `ssh-find-agent` program, and overly simplified to my use case.
 # https://github.com/wwalker/ssh-find-agent/tree/master
 
-find /tmp/ssh-* -name 'agent\.*' | \
-while read a; do
-    dirname=`dirname $a`
-    SSH_AUTH_SOCK=$a ssh-add -l >/dev/null 2>&1
-    if [ $? -eq 2 ]; then
-        # Remove dead agent
-        echo "Removing $dirname..."
-        rm -rf $dirname
-    else
-        echo "export SSH_AUTH_SOCK=$a"
-        exit 0
+# Check if the given agent is alive.
+# Returns:
+#   0: if agent is alive and have some ssh keys.
+#   1: if agent is alive but have no ssh keys.
+#   2: agent is dead (cannot connect).
+check_agent_alive() {
+    agent=$1
+    SSH_AUTH_SOCK=$agent ssh-add -l >/dev/null 2>&1
+}
+
+remove_dead_agent() {
+    agent=$1
+    dirname=`dirname $agent`
+    echo "Removing $dirname..." 1>&2
+    rm -rf $dirname
+}
+
+print_env_export() {
+    agent=$1
+    echo "export SSH_AUTH_SOCK=$agent"
+}
+
+# Main loop
+# stdin: newline separated list of agent paths
+# returns:
+#   0: A valid agent found.
+#   1: No agent found.
+find_agent_loop() {
+    while read agent; do
+        check_agent_alive $agent
+        if [[ $? -eq 2 ]]; then
+            remove_dead_agent $agent
+        else
+            # Found a valid agent
+            print_env_export $agent
+            exit 0
+        fi
+    done
+    # No agent found
+    exit 1
+}
+
+_entry() {
+    find /tmp/ssh-* -name 'agent\.*' 2>/dev/null | find_agent_loop
+    if [[ $? -eq 1 ]]; then
+        echo "No agent found. Starting a new agent..." 1>&2
+        ssh-agent
     fi
-done
+}
+
+_entry
