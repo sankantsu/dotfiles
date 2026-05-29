@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MISE_BIN="$HOME/.local/bin/mise"
-
 echo "==> Bootstrap: setting up mise environment"
 
 # Install mise if missing
+MISE_BIN="$HOME/.local/bin/mise"
 if [ -x "$MISE_BIN" ]; then
     echo "==> mise already installed at $MISE_BIN, skipping"
 else
@@ -14,12 +13,15 @@ else
     echo "==> mise installed"
 fi
 
+# Activate mise
+eval "$(~/.local/bin/mise activate bash)"
+
 # Install tools declared in mise config
 echo "==> Running: mise install"
-"$MISE_BIN" install
+mise install
 
 # Run full environment setup task
 echo "==> Running: mise run setup"
-"$MISE_BIN" run setup
+mise run setup
 
 echo "==> Bootstrap complete!"
