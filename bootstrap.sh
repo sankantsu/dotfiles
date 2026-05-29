@@ -47,5 +47,3 @@ echo "==> Configuring sparse-checkout"
 
 # Post bootstrap
 yadm bootstrap
-
-echo "==> Bootstrap complete!"
