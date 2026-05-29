@@ -4,6 +4,14 @@ set -euo pipefail
 YADM_URL="https://github.com/yadm-dev/yadm/raw/bbb58e6625de5d934fd49b4b81c1981e137e3057/yadm"
 DOTFILES_REPO="https://github.com/sankantsu/dotfiles.git"
 YADM_BIN="$HOME/bin/yadm"
+DOTFILES_BRANCH="main"
+
+while getopts "b:" opt; do
+    case "$opt" in
+        b) DOTFILES_BRANCH="$OPTARG" ;;
+        *) echo "Usage: $0 [-b branch]" >&2; exit 1 ;;
+    esac
+done
 
 echo "==> Bootstrap: setting up dev environment"
 
@@ -28,8 +36,8 @@ fi
 if "$YADM_BIN" status &>/dev/null; then
     echo "==> dotfiles already managed by yadm, skipping clone"
 else
-    echo "==> Cloning dotfiles from $DOTFILES_REPO"
-    "$YADM_BIN" clone "$DOTFILES_REPO"
+    echo "==> Cloning dotfiles from $DOTFILES_REPO (branch: $DOTFILES_BRANCH)"
+    "$YADM_BIN" clone --branch "$DOTFILES_BRANCH" "$DOTFILES_REPO"
 fi
 
 # Configure sparse-checkout to exclude README.md and bootstrap.sh
