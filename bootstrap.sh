@@ -45,4 +45,7 @@ echo "==> Configuring sparse-checkout"
 "$YADM_BIN" sparse-checkout init
 "$YADM_BIN" sparse-checkout set --no-cone '/*' '!README.md' '!bootstrap.sh'
 
+# Post bootstrap
+yadm bootstrap
+
 echo "==> Bootstrap complete!"
