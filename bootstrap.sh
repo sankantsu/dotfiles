@@ -37,7 +37,7 @@ if "$YADM_BIN" status &>/dev/null; then
     echo "==> dotfiles already managed by yadm, skipping clone"
 else
     echo "==> Cloning dotfiles from $DOTFILES_REPO (branch: $DOTFILES_BRANCH)"
-    "$YADM_BIN" clone --branch "$DOTFILES_BRANCH" "$DOTFILES_REPO"
+    "$YADM_BIN" clone --no-bootstrap --branch "$DOTFILES_BRANCH" "$DOTFILES_REPO"
 fi
 
 # Configure sparse-checkout to exclude README.md and bootstrap.sh
