@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MISE_BIN="$HOME/.local/bin/mise"
+
+echo "==> Bootstrap: setting up mise environment"
+
+# Install mise if missing
+if [ -x "$MISE_BIN" ]; then
+    echo "==> mise already installed at $MISE_BIN, skipping"
+else
+    echo "==> Installing mise"
+    curl https://mise.run | sh
+    echo "==> mise installed"
+fi
+
+# Install tools declared in mise config
+echo "==> Running: mise install"
+"$MISE_BIN" install
+
+# Run full environment setup task
+echo "==> Running: mise run setup"
+"$MISE_BIN" run setup
+
+echo "==> Bootstrap complete!"
