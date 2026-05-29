@@ -32,4 +32,9 @@ else
     "$YADM_BIN" clone "$DOTFILES_REPO"
 fi
 
+# Configure sparse-checkout to exclude README.md and bootstrap.sh
+echo "==> Configuring sparse-checkout"
+"$YADM_BIN" sparse-checkout init
+"$YADM_BIN" sparse-checkout set --no-cone '/*' '!README.md' '!bootstrap.sh'
+
 echo "==> Bootstrap complete!"
