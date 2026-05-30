@@ -19,7 +19,7 @@ curl -fsSL https://raw.githubusercontent.com/sankantsu/dotfiles/main/bootstrap.s
 To bootstrap from a specific branch:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/sankantsu/dotfiles/main/bootstrap.sh | bash -s -- -b <branch>
+curl -fsSL https://raw.githubusercontent.com/sankantsu/dotfiles/<branch>/bootstrap.sh | bash -s -- -b <branch>
 ```
 
 ## Structure
