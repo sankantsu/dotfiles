@@ -1,7 +1,3 @@
-" plugin ---------------------- {{{
-execute pathogen#infect()
-" }}}
-
 """ general settings ---------------------- {{{
 
 " language setting
