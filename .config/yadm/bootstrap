@@ -46,10 +46,6 @@ eval "$(~/.local/bin/mise activate bash)"
 echo "==> Running: mise install"
 mise install
 
-# Run full environment setup task
-echo "==> Running: mise run setup"
-mise run setup
-
 echo "==> Bootstrap complete!"
 echo ""
 echo "Run the following to apply shell changes to your current session:"
