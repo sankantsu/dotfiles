@@ -12,7 +12,11 @@ add_path() {
 }
 
 # mise
-eval "$(~/.local/bin/mise activate bash)"
+if [ -n "${ZSH_VERSION:-}" ]; then
+    eval "$(~/.local/bin/mise activate zsh)"
+else
+    eval "$(~/.local/bin/mise activate bash)"
+fi
 
 # $HOME/bin (highest priority)
 add_path "$HOME/bin"

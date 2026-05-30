@@ -3,14 +3,21 @@ set -euo pipefail
 
 echo "==> Bootstrap: setting up mise environment"
 
-# Configure bashrc to source scripts in ~/.config/profile.d
-BASHRC="$HOME/.bashrc"
+# Determine the login shell and configuration file (default: bash)
+SHELL_NAME="bash"
+SHELL_RC="$HOME/.bashrc"
+if [[ "${SHELL:-}" == *zsh ]]; then
+    SHELL_NAME="zsh"
+    SHELL_RC="$HOME/.zshrc"
+fi
+
+# Configure shell RC to source scripts in ~/.config/profile.d
 MARKER="# >>> sankantsu/dotfiles: profile.d >>>"
-if grep -qF "$MARKER" "$BASHRC"; then
-    echo "==> profile.d sourcing already configured in $BASHRC, skipping"
+if [ -f "$SHELL_RC" ] && grep -qF "$MARKER" "$SHELL_RC"; then
+    echo "==> profile.d sourcing already configured in $SHELL_RC, skipping"
 else
-    echo "==> Configuring profile.d sourcing in $BASHRC"
-    cat >> "$BASHRC" <<'EOF'
+    echo "==> Configuring profile.d sourcing in $SHELL_RC"
+    cat >> "$SHELL_RC" <<'EOF'
 
 # >>> sankantsu/dotfiles: profile.d >>>
 if [ -d "$HOME/.config/profile.d" ]; then
@@ -46,4 +53,4 @@ mise run setup
 echo "==> Bootstrap complete!"
 echo ""
 echo "Run the following to apply shell changes to your current session:"
-echo "source ~/.bashrc"
+echo "source $SHELL_RC"
