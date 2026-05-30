@@ -1,12 +1,4 @@
-" plugin ---------------------- {{{
-execute pathogen#infect()
-" }}}
-
 """ general settings ---------------------- {{{
-
-" language setting
-language message en_US.utf8
-language time en_US.utf8
 
 " enable syntax highlight and filetype specific settings
 syntax enable
