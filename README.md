@@ -2,6 +2,14 @@
 
 My config files
 
+## Prerequisites
+
+Following tools are necessary for bootstrapping:
+
+- bash
+- curl
+- git
+
 ## Usage
 
 ```
