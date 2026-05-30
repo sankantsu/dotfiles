@@ -562,7 +562,21 @@ require("telescope").load_extension("file_browser")
 -- telescope.load_extension("zenn")
 telescope.load_extension("heading")
 
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+-- Check if the current directory is a Git worktree
+local function is_git_repo()
+  local cmd = "git rev-parse --is-inside-work-tree 2>/dev/null"
+  local is_git = vim.trim(vim.fn.system(cmd))
+  return is_git == "true"
+end
+
+vim.keymap.set("n", "<leader>ff", function()
+  if is_git_repo() then
+    builtin.git_files()
+  else
+    builtin.find_files()
+  end
+end, { desc = "Find files (Git/Standard)" })
+
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
 vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
