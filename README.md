@@ -58,3 +58,12 @@ To reinitialize sparse-checkout, explicitly set no-cone mode to avoid the `unrec
 ```
 yadm sparse-checkout init --no-cone
 ```
+
+## License
+
+This repository is dedicated to the public domain under the **Creative Commons Zero (CC0 1.0 Universal)** license.
+You are free to copy, modify, and distribute my original configurations and scripts without any attribution.
+https://creativecommons.org/publicdomain/zero/1.0/deed.en
+
+Please note that this repository may also includes minor code snippets, configuration blocks, or workarounds adapted from third-party sources (such as official documentation, community guides, or MIT/BSD-licensed dotfiles).
+Wherever substantial logic was borrowed, the original copyright notices, licenses, or source URLs have been preserved inline directly within the files.
