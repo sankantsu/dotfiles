@@ -1,5 +1,3 @@
-hs.alert.show("Reloading HammerSpoon Config...")
-
 -- Toggle console window
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "H", function()
     hs.toggleConsole()
