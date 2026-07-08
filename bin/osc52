@@ -1,10 +1,9 @@
 #!/bin/bash
 
-osc52 ()
-{
-    echo -ne "\e]52;;";
-    base64 | tr -d "\n";
-    echo -ne "\e\\"
+_osc52() {
+    local data
+    data=$(base64 | tr -d '\n')
+    printf '\e]52;;%s\e\\' "$data"
 }
 
-osc52
+_osc52
